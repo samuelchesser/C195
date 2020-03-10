@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentScreenController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="524.0" prefWidth="615.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.AppointmentScreenController">
+   <children>
+      <Label fx:id="appointmentsScreenTitle" layoutX="15.0" layoutY="14.0" text="CAPA: Appointments Summary " textFill="#2964e4">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="allAppointmentsRadio" layoutX="15.0" layoutY="49.0" mnemonicParsing="false" text="All Appointments">
+         <toggleGroup>
+            <ToggleGroup fx:id="timeSpan" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="thirtyDaysRadio" layoutX="248.0" layoutY="49.0" mnemonicParsing="false" text="Next 30 Days" toggleGroup="$timeSpan" />
+      <RadioButton fx:id="sevenDaysRadio" layoutX="145.0" layoutY="49.0" mnemonicParsing="false" text="Next 7 Days" toggleGroup="$timeSpan" />
+      <TableView fx:id="appointmentsTableView" layoutY="81.0" prefHeight="331.0" prefWidth="615.0">
+        <columns>
+          <TableColumn fx:id="customerColumn" prefWidth="96.0" text="Customer" />
+          <TableColumn fx:id="consultantColumn" prefWidth="97.0" text="Consultant" />
+            <TableColumn fx:id="typeColumn" prefWidth="89.0" text="Appt. Type" />
+            <TableColumn fx:id="titleColumn" prefWidth="123.0" text="Appt. Title" />
+            <TableColumn fx:id="dateColumn" prefWidth="59.0" text="Date" />
+            <TableColumn fx:id="startColumn" prefWidth="75.0" text="Start Time" />
+            <TableColumn fx:id="endColumn" prefWidth="75.0" text="End Time" />
+        </columns>
+      </TableView>
+      <GridPane layoutX="16.0" layoutY="412.0" prefHeight="113.0" prefWidth="453.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="addAppointmentButton" minWidth="130.0" mnemonicParsing="false" onAction="#showNewAppointmentScreen" text="Add Appointment" />
+            <Button fx:id="modifyAppointmentButton" minWidth="130.0" mnemonicParsing="false" onAction="#showModifyAppointmentScreen" text="Modify Appointment" GridPane.columnIndex="1" />
+            <Button fx:id="viewCustomersButton" minWidth="130.0" mnemonicParsing="false" onAction="#showCustomersScreen" text="View Customers" GridPane.rowIndex="1" />
+            <Button fx:id="viewReportsButton" minWidth="130.0" mnemonicParsing="false" onAction="#showReportsScreen" text="View Reports" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="deleteAppointment" minWidth="130.0" mnemonicParsing="false" onAction="#deleteAppointmentHandler" text="Delete Appointment" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <Button fx:id="exitButton" layoutX="532.0" layoutY="484.0" mnemonicParsing="false" onAction="#exitButtonHandler" prefHeight="27.0" prefWidth="60.0" text="Exit" />
+   </children>
 </AnchorPane>

@@ -7,7 +7,12 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 /**
  * FXML Controller class
@@ -16,6 +21,21 @@ import javafx.fxml.Initializable;
  */
 public class CustomersScreenController implements Initializable {
 
+    @FXML
+    private Label customersScreenTitle;
+    @FXML
+    private TableView<?> customersTableView;
+    @FXML
+    private TableColumn<?, ?> nameColumn;
+    @FXML
+    private TableColumn<?, ?> addressColumn;
+    @FXML
+    private TableColumn<?, ?> cityColumn;
+    @FXML
+    private TableColumn<?, ?> zipCOlumn;
+    @FXML
+    private TableColumn<?, ?> phoneColumn;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +43,21 @@ public class CustomersScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void showAddCustomerScreen(ActionEvent event) {
+    }
+
+    @FXML
+    private void showModifyCustomerScreen(ActionEvent event) {
+    }
+
+    @FXML
+    private void deleteCustomer(ActionEvent event) {
+    }
+
+    @FXML
+    private void showAppointmentScreen(ActionEvent event) {
+    }
     
 }

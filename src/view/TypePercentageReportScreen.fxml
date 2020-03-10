@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TypePercentageReportScreenController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="513.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.TypePercentageReportScreenController">
+   <children>
+      <Label fx:id="reportsScreenTitle" layoutY="3.0" text="CAPA: Reports Screen" textFill="#2964e4">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="appointmentsByMonthReportTable" layoutX="85.0" layoutY="75.0" prefHeight="149.0" prefWidth="379.0">
+        <columns>
+          <TableColumn fx:id="appointmentTypeColumn" prefWidth="122.0" text="Appointment Type" />
+          <TableColumn fx:id="nextMonthCountColumn" minWidth="0.0" prefWidth="145.0" text="Next Month Count" />
+            <TableColumn fx:id="percentColumn" prefWidth="109.0" text="Percent of Total" />
+        </columns>
+      </TableView>
+      <Label layoutX="85.0" layoutY="46.0" text="Appointments by Month" textFill="#e85b49">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="85.0" layoutY="265.0" text="Consultants Appointments for Next Month" textFill="#e85b49">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="consultantAppointmentsReportTable" layoutX="85.0" layoutY="309.0" prefHeight="149.0" prefWidth="450.0">
+         <columns>
+            <TableColumn fx:id="consultantColumn" prefWidth="94.0" text="Consultant" />
+            <TableColumn fx:id="kickoffColumn" minWidth="0.0" prefWidth="55.0" text="Kickoff" />
+            <TableColumn fx:id="checkinColumn" prefWidth="67.0" text="Checkin" />
+            <TableColumn fx:id="retroColumn" prefWidth="53.0" text="Retro" />
+            <TableColumn fx:id="launchColumn" prefWidth="50.0" text="Launch" />
+            <TableColumn fx:id="trainingColumn" prefWidth="65.0" text="Training" />
+            <TableColumn fx:id="totalColumn" prefWidth="65.0" text="Total" />
+         </columns>
+      </TableView>
+      <Button fx:id="showAppointmentScreen" layoutX="464.0" layoutY="472.0" minWidth="55.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="exitApplication" layoutX="535.0" layoutY="472.0" minWidth="55.0" mnemonicParsing="false" text="Exit" />
+   </children>
 </AnchorPane>

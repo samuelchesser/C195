@@ -7,7 +7,14 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -16,6 +23,31 @@ import javafx.fxml.Initializable;
  */
 public class AddApoointmentScreenController implements Initializable {
 
+    @FXML
+    private Label addAppointmentScreenTitle;
+    @FXML
+    private ComboBox<?> customerComboBox;
+    @FXML
+    private ComboBox<?> consultantComboBox;
+    @FXML
+    private ComboBox<?> appyTypeComboBox;
+    @FXML
+    private TextField apptTitleTextField;
+    @FXML
+    private DatePicker dateField;
+    @FXML
+    private ComboBox<?> startMinuteComboBox;
+    @FXML
+    private ComboBox<?> startHourComboBox;
+    @FXML
+    private ComboBox<?> endHourComboBox;
+    @FXML
+    private ComboBox<?> endMinuteComboBox;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button cancelButton;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +55,13 @@ public class AddApoointmentScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void addAppointmentHandler(ActionEvent event) {
+    }
+
+    @FXML
+    private void backToApptScreen(ActionEvent event) {
+    }
     
 }
