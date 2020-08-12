@@ -6,10 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="252.0" prefWidth="437.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.LoginScreenController">
+<AnchorPane id="AnchorPane" prefHeight="252.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
    <children>
-      <Label fx:id="loginScreenTitle" layoutX="14.0" layoutY="3.0" text="Chesser Application Management Application (CAPA)" textFill="#2964e4">
+      <Label fx:id="loginScreenTitle" layoutX="14.0" layoutY="3.0" text="Chesser Appointment Management Program (CAMP)" textFill="#2964e4">
          <font>
             <Font size="18.0" />
          </font>
