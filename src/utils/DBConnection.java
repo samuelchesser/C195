@@ -19,7 +19,7 @@ public class DBConnection {
 
     //Create DB Connection
     
-    public static void createConnection() {
+    public static void makeConnection() {
         try {
         Class.forName(driver);
         connection = (com.mysql.jdbc.Connection) DriverManager.getConnection(dbUrl, userName, password);

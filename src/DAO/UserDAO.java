@@ -21,14 +21,16 @@ public class UserDAO {
     //Attempt to login
     public static Boolean attemptLogin(String userName, String password) throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
-    String query = "SELECT userId, userName, password FROM user WHERE userName ='" + userName + "'";
+    String query = "SELECT userId, userName, password FROM user WHERE userName ='" + userName + "' AND password='" + password +"'";
     ResultSet result = statement.executeQuery(query);
     if(result.next()) {
         activeUser = new User(result.getInt("userId"),
                 result.getString("userName"),
                 result.getString("password"));
                 statement.close();
+                System.out.println(activeUser);
                 return true;
+                
                 
     }
     else {statement.close(); return false;}
