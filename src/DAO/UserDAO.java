@@ -28,7 +28,7 @@ public class UserDAO {
                 result.getString("userName"),
                 result.getString("password"));
                 statement.close();
-                System.out.println(activeUser);
+                System.out.println("USER FOUND: " + activeUser);
                 return true;
                 
                 

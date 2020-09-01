@@ -13,7 +13,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerScreenController">
    <children>
-      <Label fx:id="addCustomerScreenTitle" layoutY="3.0" text="CAPA: Add New Customer " textFill="#2964e4">
+      <Label fx:id="addCustomerScreenTitle" layoutY="3.0" text="CAMP: Add New Customer " textFill="#2964e4">
          <font>
             <Font size="18.0" />
          </font>
