@@ -18,10 +18,12 @@ import javafx.scene.control.TextField;
 import DAO.UserDAO;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
@@ -62,26 +64,17 @@ public class LoginScreenController implements Initializable {
        
         String user = usernameTextField.getText();
         String password = passwordTextField.getText();
-        System.out.println("You pressed the button!");
-        System.out.println("user: " + user);
-        System.out.println("password: " + password);
         
-        if (user != null || password != null) {
+        if (!"".equals(password) && !"".equals(user)) {
             boolean loginSuccessful = UserDAO.attemptLogin(user, password);
-            System.out.println("They aren't null!");
             
             if (loginSuccessful) {
                Stage stage = new Stage();
-                Parent appointment = FXMLLoader.load(getClass().getResource("/view/AddCustomerScreen.fxml"));
+                Parent appointment = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml"));
                 Scene scene = new Scene(appointment);
                 stage.setScene(scene);
                 stage.show();
-                
-           /* Parent mainScreen = FXMLLoader.load(getClass().getResource("view/AppointmentScreen.fxml"));
-            Scene scene = new Scene(mainScreen);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(scene);
-            window.show();*/
+
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -98,6 +91,15 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     private void exitButtonHandler(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit CAMP?");
+        alert.setContentText("Are you sure you want to quit the Appointment Management Application?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.exit(0);
+        } else {
+            System.out.println("User canceled, returning to application.");
+        }
     }
     
 }

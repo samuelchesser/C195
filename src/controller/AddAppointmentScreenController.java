@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
  *
  * @author schesser
  */
-public class AddApoointmentScreenController implements Initializable {
+public class AddAppointmentScreenController implements Initializable {
 
     @FXML
     private Label addAppointmentScreenTitle;

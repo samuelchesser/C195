@@ -5,36 +5,46 @@
  */
 package DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import model.User;
 import utils.DBConnection;
 import static model.User.activeUser;
+import utils.DBQuery;
 
 /**
  *
  * @author schesser
  */
 public class UserDAO {
-    
+    static PreparedStatement ps;
     //Attempt to login
     public static Boolean attemptLogin(String userName, String password) throws SQLException {
-    Statement statement = DBConnection.getConnection().createStatement();
-    String query = "SELECT userId, userName, password FROM user WHERE userName ='" + userName + "' AND password='" + password +"'";
-    ResultSet result = statement.executeQuery(query);
-    if(result.next()) {
-        activeUser = new User(result.getInt("userId"),
-                result.getString("userName"),
-                result.getString("password"));
-                statement.close();
-                System.out.println("USER FOUND: " + activeUser);
-                return true;
-                
+        
+        String query = "SELECT userId, userName, password FROM user WHERE userName = ? AND password = ?";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setString(1, userName);
+        ps.setString(2, password);
+        ps.execute();
+        
+    
+    
+    
+    ResultSet result = ps.getResultSet();
+    while(result.next()) {
+       if (result.getString("userName").equals(userName) && result.getString("password").equals(password))
+       {
+           System.out.println("Match");
+           return true;
+       }
+              
                 
     }
-    else {statement.close(); return false;}
     
+    return false;
             }
     
 }

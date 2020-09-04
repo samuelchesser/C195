@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="436.0" prefWidth="524.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.AddApoointmentScreenController">
+<AnchorPane id="AnchorPane" prefHeight="436.0" prefWidth="524.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.AddAppointmentScreenController">
    <children>
       <Label fx:id="addAppointmentScreenTitle" layoutX="14.0" layoutY="14.0" text="CAPA: Add New Appointment " textFill="#2964e4">
          <font>
