@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * @author schesser
  */
 public class DBQuery {
-    private static PreparedStatement preparedStatement; // PreparedStatement reference   
+    private static PreparedStatement preparedStatement;
     
     // Create PreparedStatement Object
     public static void setPreparedStatement(String sqlStatement, Connection conn) throws SQLException

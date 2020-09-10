@@ -70,7 +70,7 @@ public class LoginScreenController implements Initializable {
             
             if (loginSuccessful) {
                Stage stage = new Stage();
-                Parent appointment = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml"));
+                Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
                 Scene scene = new Scene(appointment);
                 stage.setScene(scene);
                 stage.show();

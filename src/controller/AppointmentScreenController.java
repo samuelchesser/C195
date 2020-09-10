@@ -63,13 +63,12 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     private Button exitButton;
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    
+    
+       public void populateAppointmentsTable() {
+        //appointmentsTableView.setItems(AppointmentDAO.getAllAppointments());
+    }
+ 
 
     @FXML
     private void showNewAppointmentScreen(ActionEvent event) {
@@ -94,5 +93,13 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     private void exitButtonHandler(ActionEvent event) {
     }
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }   
     
 }
