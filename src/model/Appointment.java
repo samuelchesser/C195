@@ -26,14 +26,20 @@ public class Appointment {
     private Calendar appointmentDate;
     private Calendar appointmentStartTime;
     private Calendar appointmentEndTime;
+    private final StringProperty appointmentDateString;
+    private final StringProperty appointmentStartString;
+    private final StringProperty appointmentEndString;
 
     
-    public Appointment(Calendar date, Calendar appointmentStart, Calendar appointmentEnd) {
+    public Appointment() {
         appointmentId = new SimpleIntegerProperty();
         customerName = new SimpleStringProperty();
         consultantName = new SimpleStringProperty();
         appointmentType = new SimpleStringProperty();
         appointmentTitle = new SimpleStringProperty();
+        appointmentDateString = new SimpleStringProperty();
+        appointmentStartString = new SimpleStringProperty();
+        appointmentEndString = new SimpleStringProperty();
         
     }
     
@@ -102,6 +108,28 @@ public class Appointment {
         this.appointmentEndTime = appointmentEndTime;
     }
     
+    public String getAppointmentDateString() {
+        return this.appointmentDateString.get();
+    }
+
+    public StringProperty appointmentDateProp() { return appointmentDateString; }
+
+    public void setAppointmentDateString(String appointmentDateString) { this.appointmentDateString.set(appointmentDateString);}
     
+    public String getAppointmentStartString() {
+        return this.appointmentStartString.get();
+    }
+
+    public StringProperty appointmentStartProp() { return appointmentStartString; }
+
+    public void setAppointmentDtartString(String appointmentStartString) { this.appointmentStartString.set(appointmentStartString);}
+    
+    public String getAppointmentEndString() {
+        return this.appointmentEndString.get();
+    }
+
+    public StringProperty appointmentEndProp() { return appointmentEndString; }
+
+    public void setAppointmentEndString(String appointmentEndString) { this.appointmentEndString.set(appointmentEndString);}
     
 }

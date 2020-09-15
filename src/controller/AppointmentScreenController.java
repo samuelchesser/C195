@@ -66,7 +66,7 @@ public class AppointmentScreenController implements Initializable {
     
     
        public void populateAppointmentsTable() {
-        //appointmentsTableView.setItems(AppointmentDAO.getAllAppointments());
+        //appointmentsTableView.setItems(AppointmentDAO.getAppointments());
     }
  
 
