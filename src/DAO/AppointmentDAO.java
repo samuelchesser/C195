@@ -23,9 +23,9 @@ import utils.DBQuery;
 public class AppointmentDAO {
     static PreparedStatement ps;
     
-    private static ObservableList<Appointment> getAppointments() throws SQLException{
+    public static ObservableList<Appointment> getAppointments() throws SQLException{
         ObservableList<Appointment> appointments=FXCollections.observableArrayList();
-        String query = "SELECT customer.customerName, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.id = appointment.customerId INNER JOIN user on user.userId = appointment.userId";
+        String query = "SELECT customer.customerName, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.execute();

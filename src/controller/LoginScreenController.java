@@ -69,9 +69,9 @@ public class LoginScreenController implements Initializable {
             boolean loginSuccessful = UserDAO.attemptLogin(user, password);
             
             if (loginSuccessful) {
-               Stage stage = new Stage();
                 Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
                 Scene scene = new Scene(appointment);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
 
