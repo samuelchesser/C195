@@ -8,8 +8,10 @@ package DAO;
 import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import javafx.collections.FXCollections;
 import model.Appointment;
 import utils.DBConnection;
@@ -30,9 +32,34 @@ public class AppointmentDAO {
         ps = DBQuery.getPreparedStatement();
         ps.execute();
         ResultSet result = ps.getResultSet();
-        Appointment appointment = new Appointment();         
+        ResultSetMetaData rsmd = result.getMetaData();
+   
+      /* int columnsNumber = rsmd.getColumnCount();
+        System.out.println("Result Set: " + result.toString());
+      */
+                
          while(result.next()) {
+               Appointment appointment = new Appointment(); 
+              // customer.setCustomerName("customer.customerName");
+              // user.setAppointmentConsultant("user.userName");
+               appointment.setAppointmentType(result.getString("appointment.type"));
+               appointment.setAppointmentTitle(result.getString("appointment.title"));
+               //appointment.setAppointmentDate("appointment.start");
+              // String startTime = result.getString("appointment.start");
+               //Calendar startTimeUTC = DateTimeConverters.stringToCalendar(startTime);
+              // String endTime = result.getString("appointment.end");
+               //Calendar endTimeUTC = DateTimeConverters.stringToCalendar(endTime);
+               
              appointments.add(appointment);
+             
+             System.out.println("Appointment: " + appointment);
+             /*for (int i = 1; i <= columnsNumber; i++) {
+           if (i > 1) System.out.print(",  ");
+           String columnValue = result.getString(i);
+           System.out.print(columnValue + " " + rsmd.getColumnName(i));
+       }
+       System.out.println("");
+*/
          }
         return appointments;
     }

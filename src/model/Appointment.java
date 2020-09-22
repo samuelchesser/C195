@@ -131,5 +131,11 @@ public class Appointment {
     public StringProperty appointmentEndProp() { return appointmentEndString; }
 
     public void setAppointmentEndString(String appointmentEndString) { this.appointmentEndString.set(appointmentEndString);}
+
+    @Override
+    public String toString() {
+        return "Appointment{" + "appointmentId=" + appointmentId + ", customerName=" + customerName + ", consultantName=" + consultantName + ", appointmentType=" + appointmentType + ", appointmentTitle=" + appointmentTitle + ", appointmentDate=" + appointmentDate + ", appointmentStartTime=" + appointmentStartTime + ", appointmentEndTime=" + appointmentEndTime + ", appointmentDateString=" + appointmentDateString + ", appointmentStartString=" + appointmentStartString + ", appointmentEndString=" + appointmentEndString + '}';
+    }
+    
     
 }
