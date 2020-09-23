@@ -19,7 +19,7 @@
             <TableColumn fx:id="nameColumn" prefWidth="124.0" text="Name" />
             <TableColumn fx:id="addressColumn" prefWidth="167.0" text="Address" />
             <TableColumn fx:id="cityColumn" prefWidth="91.0" text="City" />
-            <TableColumn fx:id="zipCOlumn" prefWidth="75.0" text="Zip" />
+            <TableColumn fx:id="zipColumn" prefWidth="75.0" text="Zip" />
             <TableColumn fx:id="phoneColumn" prefWidth="88.0" text="Phone" />
          </columns>
       </TableView>

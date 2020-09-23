@@ -17,6 +17,7 @@ import model.Appointment;
 import utils.DBConnection;
 import static model.User.activeUser;
 import utils.DBQuery;
+import model.Customer;
 
 /**
  *
@@ -40,8 +41,8 @@ public class AppointmentDAO {
                 
          while(result.next()) {
                Appointment appointment = new Appointment(); 
-              // customer.setCustomerName("customer.customerName");
-              // user.setAppointmentConsultant("user.userName");
+               appointment.setCustomerName(result.getString("customer.customerName"));
+               appointment.setConsultantName(result.getString("user.userName"));
                appointment.setAppointmentType(result.getString("appointment.type"));
                appointment.setAppointmentTitle(result.getString("appointment.title"));
                //appointment.setAppointmentDate("appointment.start");
