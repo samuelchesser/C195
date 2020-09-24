@@ -7,17 +7,26 @@ package controller;
 
 import DAO.AppointmentDAO;
 import DAO.CustomerDAO;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import model.Customer;
 
 /**
@@ -64,15 +73,35 @@ public class CustomersScreenController implements Initializable {
     }    
 
     @FXML
-    private void showAddCustomerScreen(ActionEvent event) {
+    private void showAddCustomerScreen(ActionEvent event) throws IOException {
+        Parent customers = FXMLLoader.load(getClass().getResource("/view/AddCustomerScreen.fxml"));
+        Scene scene = new Scene(customers);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
-    private void showModifyCustomerScreen(ActionEvent event) {
+    private void showModifyCustomerScreen(ActionEvent event) throws IOException {
+        Parent customers = FXMLLoader.load(getClass().getResource("/view/AddCustomerScreen.fxml"));
+        Scene scene = new Scene(customers);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
-    private void deleteCustomer(ActionEvent event) {
+    private void deleteCustomer(ActionEvent event) throws SQLException {
+        Customer customer = customersTableView.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm customer deletion");
+        alert.setContentText("Please confirm you want to delete the following customer: " + customer.getCustomerName());
+        Optional<ButtonType> confirmation = alert.showAndWait();
+
+        if (confirmation.get() == ButtonType.OK) {
+            deleteCustomer(customer);
+            populateCustomersTable();
+        }
     }
 
     @FXML
