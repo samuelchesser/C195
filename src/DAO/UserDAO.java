@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import model.Appointment;
 import model.User;
 import utils.DBConnection;
 import static model.User.activeUser;
@@ -19,6 +21,7 @@ import utils.DBQuery;
  * @author schesser
  */
 public class UserDAO {
+    public static int currentUser = 0;
     static PreparedStatement ps;
     //Attempt to login
     public static Boolean attemptLogin(String userName, String password) throws SQLException {
@@ -30,23 +33,22 @@ public class UserDAO {
         ps.setString(2, password);
         ps.execute();
         
-    
-    
-    
+
     ResultSet result = ps.getResultSet();
     while(result.next()) {
        if (result.getString("userName").equals(userName) && result.getString("password").equals(password))
        {
            System.out.println("Match");
+           currentUser = result.getInt("userId");
+           AppointmentDAO.getAppointmentsAlert();
            return true;
-       }
-              
-                
-    }
-    
+           
+           
+       }          
+    } 
     return false;
-            }
     
+    }
     
     
 }

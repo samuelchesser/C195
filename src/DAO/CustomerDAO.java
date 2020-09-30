@@ -52,7 +52,7 @@ public class CustomerDAO {
         ps.setString(1, custName);
         ps.setInt(2, address);
         //need to figure out question makes (this is the third mark, but column 5) and setting the createdBy and updateBy to the logged in user. Grab from 
-        ps.setString(3, user.);
+       // ps.setString(3, user.);
         ps.setInt(2, address);
         ps.setInt(2, address);
         ps.setInt(2, address);

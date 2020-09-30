@@ -11,7 +11,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javafx.collections.FXCollections;
 import model.Appointment;
 import utils.DBConnection;
@@ -24,6 +29,7 @@ import model.Customer;
  * @author schesser
  */
 public class AppointmentDAO {
+    public static String appointmentAlerts;
     static PreparedStatement ps;
     
     public static ObservableList<Appointment> getAppointments() throws SQLException{
@@ -65,4 +71,40 @@ public class AppointmentDAO {
         return appointments;
     }
     
+    //public static Boolean alertableAppointments() {
+    
+    public static String getAppointmentsAlert() throws SQLException {
+        //Figure out conversion and query from here
+        LocalDateTime ldt = LocalDateTime.now();
+        ZonedDateTime zdt = ldt.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+        ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime ldtIn = utczdt.toLocalDateTime();
+        
+        ZonedDateTime zdtOut = ldtIn.atZone(ZoneId.of("UTC"));
+        ZonedDateTime zdtOutToLocalTZ = zdtOut.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString()));
+        LocalDateTime ldtOutFinal = zdtOutToLocalTZ.toLocalDateTime();
+        System.out.println(ldt);
+        System.out.println(zdt);
+        System.out.println(utczdt);
+        System.out.println(ldtIn);
+        System.out.println(zdtOut);
+        System.out.println(zdtOutToLocalTZ);
+        System.out.println(ldtOutFinal);
+       /* String query = "SELECT count(*) FROM appointment WHERE ";
+        String query = "SELECT customer.customerName, appointment.type, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId";
+        String appointmentAlert = "Hello! The following appointments  are scheduled in the next 15 minutes: \n";
+        Boolean alertableAppointments = false;
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+        while(result.next()) { 
+               String customer = result.getString("customer.customerName");
+               String appointmentType = result.getString("appointment.type");
+               appointmentAlert = appointmentAlert + customer + " for a " + appointmentType + "\n";
+               alertableAppointments = true;
+        }
+        return appointmentAlert;*/
+    return ldt.toString();
+    }
 }

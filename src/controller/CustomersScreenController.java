@@ -99,7 +99,7 @@ public class CustomersScreenController implements Initializable {
         Optional<ButtonType> confirmation = alert.showAndWait();
 
         if (confirmation.get() == ButtonType.OK) {
-            deleteCustomer(customer);
+          //  deleteCustomer(customer);
             populateCustomersTable();
         }
     }

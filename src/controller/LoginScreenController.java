@@ -5,6 +5,7 @@
  */
 package controller;
 
+import DAO.AppointmentDAO;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -74,6 +75,7 @@ public class LoginScreenController implements Initializable {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
+                AppointmentDAO.getAppointmentsAlert();
 
             }
             else {
