@@ -19,13 +19,13 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <RadioButton fx:id="allAppointmentsRadio" layoutX="15.0" layoutY="49.0" mnemonicParsing="false" text="All Appointments">
+      <RadioButton fx:id="allAppointmentsRadio" layoutX="15.0" layoutY="49.0" mnemonicParsing="false" onAction="#showAllAppts" text="All Appointments">
          <toggleGroup>
             <ToggleGroup fx:id="timeSpan" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="thirtyDaysRadio" layoutX="248.0" layoutY="49.0" mnemonicParsing="false" text="Next 30 Days" toggleGroup="$timeSpan" />
-      <RadioButton fx:id="sevenDaysRadio" layoutX="145.0" layoutY="49.0" mnemonicParsing="false" text="Next 7 Days" toggleGroup="$timeSpan" />
+      <RadioButton fx:id="thirtyDaysRadio" layoutX="248.0" layoutY="49.0" mnemonicParsing="false" onAction="#filterThirtyDays" text="Next 30 Days" toggleGroup="$timeSpan" />
+      <RadioButton fx:id="sevenDaysRadio" layoutX="145.0" layoutY="49.0" mnemonicParsing="false" onAction="#filterSevenDays" text="Next 7 Days" toggleGroup="$timeSpan" />
       <TableView fx:id="appointmentsTableView" layoutY="81.0" prefHeight="331.0" prefWidth="615.0">
         <columns>
           <TableColumn fx:id="customerColumn" prefWidth="96.0" text="Customer" />

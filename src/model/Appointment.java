@@ -5,8 +5,11 @@
  */
 package model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,9 +26,9 @@ public class Appointment {
     private final StringProperty consultantName;
     private final StringProperty appointmentType;
     private final StringProperty appointmentTitle;
-    private Calendar appointmentDate;
-    private Calendar appointmentStartTime;
-    private Calendar appointmentEndTime;
+    private LocalDate appointmentDate;
+    private LocalTime appointmentStartTime;
+    private LocalTime appointmentEndTime;
     private final StringProperty appointmentDateString;
     private final StringProperty appointmentStartString;
     private final StringProperty appointmentEndString;
@@ -84,53 +87,31 @@ public class Appointment {
     public void setAppointmentTitle(String appointmentTitle) { this.appointmentTitle.set(appointmentTitle);}
 
 
-    public Calendar getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(Calendar appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
-    public Calendar getAppointmentStartTime() {
-        return appointmentStartTime;
-    }
-
-    public void setAppointmentStartTime(Calendar appointmentStartTime) {
-        this.appointmentStartTime = appointmentStartTime;
-    }
-
-    public Calendar getAppointmentEndTime() {
-        return appointmentEndTime;
-    }
-
-    public void setAppointmentEndTime(Calendar appointmentEndTime) {
-        this.appointmentEndTime = appointmentEndTime;
-    }
-    
-    public String getAppointmentDateString() {
+    public String getAppointmentDate() {
         return this.appointmentDateString.get();
     }
 
     public StringProperty appointmentDateProp() { return appointmentDateString; }
 
-    public void setAppointmentDateString(String appointmentDateString) { this.appointmentDateString.set(appointmentDateString);}
-    
-    public String getAppointmentStartString() {
-        return this.appointmentStartString.get();
+    public void setAppointmentDate(String appointmentDateString) { this.appointmentDateString.set(appointmentDateString);}
+
+    public String getAppointmentStartTime() {
+        return appointmentStartString.get();
     }
 
-    public StringProperty appointmentStartProp() { return appointmentStartString; }
+   public StringProperty appointmentStartProp() { return appointmentStartString; }
 
-    public void setAppointmentDtartString(String appointmentStartString) { this.appointmentStartString.set(appointmentStartString);}
     
-    public String getAppointmentEndString() {
-        return this.appointmentEndString.get();
-    }
+    public void setAppointmentStart(String appointmentStartString) { this.appointmentStartString.set(appointmentStartString);}
+
+    public String getAppointmentEndTime() {
+           return appointmentEndString.get();
+       }
 
     public StringProperty appointmentEndProp() { return appointmentEndString; }
 
-    public void setAppointmentEndString(String appointmentEndString) { this.appointmentEndString.set(appointmentEndString);}
+
+    public void setAppointmentEnd(String appointmentEndString) { this.appointmentEndString.set(appointmentEndString);}
 
     @Override
     public String toString() {

@@ -6,9 +6,12 @@
 package controller;
 
 import DAO.AppointmentDAO;
+import static DAO.AppointmentDAO.foundAppts;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -77,7 +80,46 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     private Button exitButton;
 
+    String filterLength = "";
+    @FXML
+    private void filterSevenDays(ActionEvent event) throws SQLException {
+        filterLength = "week";
+        AppointmentDAO.filterDays(filterLength);
 
+        if (foundAppts > 0) {
+             populateApptsTable("filterDays");
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Appointments Within 7 Days");
+            alert.setContentText("There are no appointments scheduled in the next 7 days.");
+            alert.showAndWait();
+        }
+        
+    }
+    
+    @FXML
+    private void filterThirtyDays(ActionEvent event) throws SQLException {
+        filterLength = "month";
+        AppointmentDAO.filterDays(filterLength);
+
+        if (foundAppts > 0) {
+             populateApptsTable("filterDays");
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Appointments Within 30 Days");
+            alert.setContentText("There are no appointments scheduled in the next 30 days. Hopefully business picks up!");
+            alert.showAndWait();
+        }
+        
+    }
+    
+    @FXML
+    private void showAllAppts(ActionEvent event) throws SQLException {
+        populateApptsTable("initial");
+    }
+    
     @FXML
     private void showNewAppointmentScreen(ActionEvent event) throws IOException {
         Parent appointment = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml"));
@@ -126,8 +168,13 @@ public class AppointmentScreenController implements Initializable {
         }
     }
     
-        public void populateApptsTable() throws SQLException {
-        appointmentsTableView.setItems(AppointmentDAO.getAppointments());
+        public void populateApptsTable(String context) throws SQLException {
+            if (context.equals("initial")) {
+                appointmentsTableView.setItems(AppointmentDAO.getAppointments());
+            }
+            else if (context.equals("filterDays")) {
+                appointmentsTableView.setItems(AppointmentDAO.filterDays(filterLength));    
+            }
     }
     
     /**
@@ -145,7 +192,7 @@ public class AppointmentScreenController implements Initializable {
        startColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentStartProp());
        endColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentEndProp());
         try {
-            populateApptsTable();
+            populateApptsTable("initial");
         } catch (SQLException ex) {
             Logger.getLogger(AppointmentScreenController.class.getName()).log(Level.WARNING, null, ex);
         }
