@@ -105,6 +105,7 @@ public class AppointmentDAO {
                appointment.setAppointmentEnd(result.getTimestamp("appointment.end").toLocalDateTime().toLocalTime().toString());
                
                appointments.add(appointment);
+               foundAppts = result.getRow();
          }
         return appointments;
     }
