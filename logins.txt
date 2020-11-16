@@ -1,0 +1,9 @@
+Logins:
+Empty login attempt detected at: 2020-11-15 21:34:38.509
+Failed login attempt by testat: 2020-11-15 21:34:52.92
+Successful login by testat: 2020-11-15 21:34:56.329
+Empty login attempt detected at: 2020-11-15 21:35:32.048
+Empty login attempt detected at: 2020-11-15 21:35:42.904
+Empty login attempt detected at: 2020-11-15 21:35:49.452
+Failed login attempt by test at: 2020-11-15 21:35:51.375
+Successful login by test at: 2020-11-15 21:35:53.839
