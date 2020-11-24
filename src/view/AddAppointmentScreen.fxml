@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="436.0" prefWidth="524.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.AddAppointmentScreenController">
+<AnchorPane id="AnchorPane" prefHeight="436.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentScreenController">
    <children>
       <Label fx:id="addAppointmentScreenTitle" layoutX="14.0" layoutY="14.0" text="CAPA: Add New Appointment " textFill="#2964e4">
          <font>
@@ -42,23 +41,23 @@
             <Label text="Date" GridPane.rowIndex="4" />
             <Label text="Start Time" GridPane.rowIndex="5" />
             <Label text="End Time" GridPane.rowIndex="6" />
-            <ComboBox fx:id="customerComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
-            <ComboBox fx:id="consultantComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="appyTypeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="customerComboBox" onAction="#showCustomers" prefWidth="150.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="consultantComboBox" onAction="#showConsultants" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="appyTypeComboBox" onAction="#showAppointmentTypes" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="apptTitleTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <DatePicker fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="startMinuteComboBox" minWidth="55.0" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <ComboBox fx:id="startMinuteComboBox" minWidth="55.0" onAction="#showMinutes" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="60.0" />
                </GridPane.margin>
             </ComboBox>
-            <ComboBox fx:id="startHourComboBox" minWidth="55.0" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <ComboBox fx:id="startHourComboBox" minWidth="55.0" onAction="#showHours" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </ComboBox>
-            <ComboBox fx:id="endHourComboBox" minWidth="55.0" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <ComboBox fx:id="endMinuteComboBox" minWidth="55.0" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <ComboBox fx:id="endHourComboBox" minWidth="55.0" onAction="#showHours" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <ComboBox fx:id="endMinuteComboBox" minWidth="55.0" onAction="#showMinutes" prefWidth="55.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="60.0" />
                </GridPane.margin>

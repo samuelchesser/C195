@@ -21,6 +21,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.Customer;
+import model.User;
 
 /**
  * FXML Controller class
@@ -32,23 +35,23 @@ public class AddAppointmentScreenController implements Initializable {
     @FXML
     private Label addAppointmentScreenTitle;
     @FXML
-    private ComboBox<?> customerComboBox;
+    private ComboBox<Customer> customerComboBox;
     @FXML
-    private ComboBox<?> consultantComboBox;
+    private ComboBox<User> consultantComboBox;
     @FXML
-    private ComboBox<?> appyTypeComboBox;
+    private ComboBox<Appointment> appyTypeComboBox;
     @FXML
     private TextField apptTitleTextField;
     @FXML
     private DatePicker dateField;
     @FXML
-    private ComboBox<?> startMinuteComboBox;
+    private ComboBox<String> startMinuteComboBox;
     @FXML
-    private ComboBox<?> startHourComboBox;
+    private ComboBox<String> startHourComboBox;
     @FXML
-    private ComboBox<?> endHourComboBox;
+    private ComboBox<String> endHourComboBox;
     @FXML
-    private ComboBox<?> endMinuteComboBox;
+    private ComboBox<String> endMinuteComboBox;
     @FXML
     private Button saveButton;
     @FXML
@@ -73,6 +76,26 @@ public class AddAppointmentScreenController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    private void showCustomers(ActionEvent event) {
+    }
+
+    @FXML
+    private void showConsultants(ActionEvent event) {
+    }
+
+    @FXML
+    private void showAppointmentTypes(ActionEvent event) {
+    }
+
+    @FXML
+    private void showMinutes(ActionEvent event) {
+    }
+
+    @FXML
+    private void showHours(ActionEvent event) {
     }
     
 }
