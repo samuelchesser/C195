@@ -5,9 +5,15 @@
  */
 package controller;
 
+import DAO.CustomerDAO;
+import DAO.UserDAO;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,9 +41,9 @@ public class AddAppointmentScreenController implements Initializable {
     @FXML
     private Label addAppointmentScreenTitle;
     @FXML
-    private ComboBox<Customer> customerComboBox;
+    private ComboBox<String> customerComboBox;
     @FXML
-    private ComboBox<User> consultantComboBox;
+    private ComboBox<String> consultantComboBox;
     @FXML
     private ComboBox<Appointment> appyTypeComboBox;
     @FXML
@@ -62,8 +68,23 @@ public class AddAppointmentScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        try {
+            ObservableList<Customer> customers = CustomerDAO.getCustomers();
+            customers.forEach((customer) -> {
+            customerComboBox.getItems().addAll(customer.getCustomerName());
+        });
+        } catch (SQLException ex) {
+            Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            ObservableList<User> users = UserDAO.getUsers();
+            users.forEach((user) -> {
+            consultantComboBox.getItems().addAll(user.getUserName());
+        });
+        } catch (SQLException ex) {
+            Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @FXML
     private void addAppointmentHandler(ActionEvent event) {

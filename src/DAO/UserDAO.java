@@ -10,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Customer;
 import model.User;
 import utils.DBConnection;
 import static model.User.activeUser;
@@ -48,6 +51,26 @@ public class UserDAO {
     } 
     return false;
     
+    }
+    
+    //need to change
+    public static ObservableList<User> getUsers() throws SQLException{
+        ObservableList<User> users=FXCollections.observableArrayList();
+        String query = "SELECT user.userId, user.userName, user.password FROM user WHERE user.active = 1";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+                
+         while(result.next()) {
+               User user = new User();
+               user.setUserId(result.getInt("user.userId)"));
+               user.setUserName(result.getString("user.userName"));
+               user.setPassword(result.getString("user.password"));
+               users.add(user);
+          
+       }
+        return users;
     }
     
     

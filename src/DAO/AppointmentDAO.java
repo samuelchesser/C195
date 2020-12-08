@@ -78,6 +78,7 @@ public class AppointmentDAO {
     
     public static ObservableList<Appointment> filterDays(String length) throws SQLException{
         LocalDateTime filter = now.plusYears(100);
+        Timestamp todayTS = Timestamp.valueOf(now);
         if (length.equals("week")) { 
         filter = now.plusWeeks(1);
         }
@@ -87,10 +88,11 @@ public class AppointmentDAO {
         Timestamp filterTS = Timestamp.valueOf(filter);
         
         ObservableList<Appointment> appointments=FXCollections.observableArrayList();
-        String query = "SELECT customer.customerName, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId WHERE appointment.start <= ?";
+        String query = "SELECT customer.customerName, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId WHERE appointment.start <= ? AND appointment.start >= ?";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.setTimestamp(1, filterTS);
+        ps.setTimestamp(2, todayTS);
         ps.execute();
         ResultSet result = ps.getResultSet();
                 
@@ -106,47 +108,11 @@ public class AppointmentDAO {
                
                appointments.add(appointment);
                foundAppts = result.getRow();
+               System.out.println("Found an appointment in the filter: " + appointment);
          }
         return appointments;
     }
     
-    public static ObservableList<Appointment> filterThirtyDays() throws SQLException{
-        ObservableList<Appointment> appointments=FXCollections.observableArrayList();
-        LocalDateTime filter = now.plusMonths(1);
-        Timestamp filterTS = Timestamp.valueOf(filter);
-        String query = "SELECT customer.customerName, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId WHERE appointment.start <= ?";
-        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
-        ps = DBQuery.getPreparedStatement();
-        ps.setTimestamp(1, filterTS);
-        ps.execute();
-        ResultSet result = ps.getResultSet();
-                
-         while(result.next()) {
-               Appointment appointment = new Appointment(); 
-               appointment.setCustomerName(result.getString("customer.customerName"));
-               appointment.setConsultantName(result.getString("user.userName"));
-               appointment.setAppointmentType(result.getString("appointment.type"));
-               appointment.setAppointmentTitle(result.getString("appointment.title"));
-               appointment.setAppointmentDate(dateFormatter.format(result.getTimestamp("appointment.start").toLocalDateTime().toLocalDate()));
-               appointment.setAppointmentStart(result.getTimestamp("appointment.start").toLocalDateTime().toLocalTime().toString());
-               appointment.setAppointmentEnd(result.getTimestamp("appointment.end").toLocalDateTime().toLocalTime().toString());
-               
-               appointments.add(appointment);
-               foundAppts = result.getRow();
-               System.out.println("Appointment: " + appointment);
-               System.out.println("Get Row call: " + result.getRow());
-               System.out.println("Found Appts var value: " + foundAppts);
-             //System.out.println("Appointment: " + appointment);
-             /*for (int i = 1; i <= columnsNumber; i++) {
-           if (i > 1) System.out.print(",  ");
-           String columnValue = result.getString(i);
-           System.out.print(columnValue + " " + rsmd.getColumnName(i));
-       }
-       System.out.println("");
-*/
-         }
-        return appointments;
-    }
     
     //public static Boolean alertableAppointments() {
     

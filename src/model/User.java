@@ -7,7 +7,7 @@ package model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-
+//Need to modify to match appointment more. Make sure we aren't breaking logging in if we do change Public User
 /**
  *
  * @author schesser
@@ -23,7 +23,7 @@ public final class User {
         setUserName(currentName);
         setPassword(currentPassword);
     }
-
+    
     public void setUserId(int userId) {
         this.userId.set(userId);
     }
