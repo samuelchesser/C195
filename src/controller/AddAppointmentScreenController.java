@@ -5,14 +5,17 @@
  */
 package controller;
 
+import DAO.AppointmentDAO;
 import DAO.CustomerDAO;
 import DAO.UserDAO;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,7 +48,7 @@ public class AddAppointmentScreenController implements Initializable {
     @FXML
     private ComboBox<String> consultantComboBox;
     @FXML
-    private ComboBox<Appointment> appyTypeComboBox;
+    private ComboBox<String> apptTypeComboBox;
     @FXML
     private TextField apptTitleTextField;
     @FXML
@@ -84,6 +87,22 @@ public class AddAppointmentScreenController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            ObservableList<Appointment> appointments = AppointmentDAO.getAppointments();
+            appointments.forEach((appointment) -> {
+            apptTypeComboBox.getItems().addAll(appointment.getAppointmentType());
+        });
+        } catch (SQLException ex) {
+            Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        startHourComboBox.getItems().addAll(
+            "01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" ); 
+        startMinuteComboBox.getItems().addAll(
+            "00","15","30", "45");
+        endHourComboBox.getItems().addAll(
+            "01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" ); 
+        endMinuteComboBox.getItems().addAll(
+            "00","15","30", "45"); 
     }
 
     @FXML

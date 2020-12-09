@@ -5,44 +5,54 @@
  */
 package model;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 //Need to modify to match appointment more. Make sure we aren't breaking logging in if we do change Public User
 /**
  *
  * @author schesser
  */
-public final class User {
+public class User {
     public static User activeUser;
-    private final SimpleIntegerProperty userId = new SimpleIntegerProperty();
-    private final SimpleStringProperty userName = new SimpleStringProperty();
-    private final SimpleStringProperty password = new SimpleStringProperty();
+    private final SimpleIntegerProperty userId;
+    private final SimpleStringProperty userName;
+    private final SimpleStringProperty password;
     
-    public User (int currentId, String currentName, String currentPassword) {
-        setUserId(currentId);
-        setUserName(currentName);
-        setPassword(currentPassword);
+    public User () {
+        userId = new SimpleIntegerProperty();
+        userName = new SimpleStringProperty();
+        password = new SimpleStringProperty();
     }
     
-    public void setUserId(int userId) {
-        this.userId.set(userId);
-    }
     public int getUserId() {
-        return userId.get();
+        return this.userId.get();
     }
 
-    public void setUserName(String userName) {
-        this.userName.set(userName);
-    }
+    public IntegerProperty userIdProp() { return userId; }
+
+    public void setUserId(int userId) { this.userId.set(userId);}
+
     public String getUserName() {
-        return userName.get();
+        return this.userName.get();
     }
+
+    public StringProperty userNameProp() { return userName; }
+
+    public void setUserName(String userName) { this.userName.set(userName);}
     
-     public void setPassword(String password) {
-        this.password.set(password);
-    }
     public String getPassword() {
-        return password.get();
+        return this.password.get();
+    }
+
+    public StringProperty passwordProp() { return password; }
+
+    public void setPassword(String password) { this.password.set(password);}
+
+    @Override
+    public String toString() {
+        return "User{" + "userId=" + userId + ", userName=" + userName + ", password=" + password + '}';
     }
     
 
