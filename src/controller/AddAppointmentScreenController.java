@@ -11,6 +11,8 @@ import DAO.UserDAO;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -24,6 +26,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -72,6 +75,7 @@ public class AddAppointmentScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            //Need to update to pull in cust and consultant id
             ObservableList<Customer> customers = CustomerDAO.getCustomers();
             customers.forEach((customer) -> {
             customerComboBox.getItems().addAll(customer.getCustomerName());
@@ -106,7 +110,30 @@ public class AddAppointmentScreenController implements Initializable {
     }
 
     @FXML
-    private void addAppointmentHandler(ActionEvent event) {
+    private void addAppointmentHandler(ActionEvent event) throws IOException {
+        //How to translate time? Here or in DAO?
+        int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
+        int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
+        String apptType = apptTypeComboBox.getValue();
+        String apptTitle = apptTitleTextField.getText();
+        LocalDate apptDate = dateField.getValue();
+        int startHour = Integer.parseInt(startHourComboBox.getValue().substring(0,2));
+        int startMinute = Integer.parseInt(startMinuteComboBox.getValue().substring(0,2));
+        int endHour = Integer.parseInt(endHourComboBox.getValue().substring(0,2));
+        int endMinute = Integer.parseInt(endMinuteComboBox.getValue().substring(0,2));
+
+        AppointmentDAO.addAppointment();
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success");
+        alert.setContentText("Appt created for " + customerComboBox.getValue() + " on " + apptDate);
+        alert.showAndWait();
+        
+        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+        Scene scene = new Scene(appointment);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
