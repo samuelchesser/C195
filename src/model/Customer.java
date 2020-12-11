@@ -17,6 +17,7 @@ import javafx.beans.property.StringProperty;
 public class Customer {
     private final IntegerProperty customerId;
     private final StringProperty customerName;
+    private final IntegerProperty addressId;
     private final StringProperty customerAddress;
     private final StringProperty customerCity;
     private final StringProperty customerZip;
@@ -27,6 +28,7 @@ public class Customer {
     public Customer() {
         customerId = new SimpleIntegerProperty();
         customerName = new SimpleStringProperty();
+        addressId = new SimpleIntegerProperty();
         customerAddress = new SimpleStringProperty();
         customerCity = new SimpleStringProperty();
         customerZip = new SimpleStringProperty();
@@ -49,6 +51,14 @@ public class Customer {
     public StringProperty customerNameProp() { return customerName; }
 
     public void setCustomerName(String customerName) { this.customerName.set(customerName);}
+    
+    public int getAddressId() {
+        return this.addressId.get();
+    }
+    
+    public IntegerProperty addressIdProp() { return addressId; }
+
+    public void setAddressId(int addressId) { this.addressId.set(addressId);}
     
     public String getCustomerAddress() {
         return this.customerAddress.get();

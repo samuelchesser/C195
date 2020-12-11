@@ -23,7 +23,7 @@ import utils.DBQuery;
  * @author schesser
  */
 public class UserDAO {
-    public static int currentUser = 0;
+    public static String currentUser = "fake";
     static PreparedStatement ps;
     //Attempt to login
     public static Boolean attemptLogin(String userName, String password) throws SQLException {
@@ -41,7 +41,7 @@ public class UserDAO {
        if (result.getString("userName").equals(userName) && result.getString("password").equals(password))
        {
            System.out.println("Match");
-           currentUser = result.getInt("userId");
+           currentUser = result.getString("userName");
            AppointmentDAO.getAppointmentsAlert();
            return true;
            
@@ -69,6 +69,14 @@ public class UserDAO {
          }
         return users;
     }
+    
+    public static User getCurrentUser() {
+        User user = new User();
+        user.setUserName(currentUser);
+        return user;
+    }
+    
+    
     
     
     

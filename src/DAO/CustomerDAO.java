@@ -26,7 +26,7 @@ public class CustomerDAO {
     
     public static ObservableList<Customer> getCustomers() throws SQLException{
         ObservableList<Customer> customers=FXCollections.observableArrayList();
-        String query = "SELECT cust.customerName, a.address, city.city, a.postalCode, a.phone FROM customer cust INNER JOIN address a ON a.addressId = cust.addressId INNER JOIN city on a.cityId = city.cityId";
+        String query = "SELECT cust.customerName, a.addressId, a.address, city.city, a.postalCode, a.phone FROM customer cust INNER JOIN address a ON a.addressId = cust.addressId INNER JOIN city on a.cityId = city.cityId";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.execute();
@@ -35,6 +35,7 @@ public class CustomerDAO {
          while(result.next()) {
                Customer customer = new Customer(); 
                customer.setCustomerName(result.getString("cust.customerName"));
+               customer.setAddressId(result.getInt("a.addressId"));
                customer.setCustomerAddress(result.getString("a.address"));
                customer.setCustomerCity(result.getString("city.city"));
                customer.setCustomerZip(result.getString("a.postalCode"));
@@ -53,10 +54,10 @@ public class CustomerDAO {
         ps.setInt(2, address);
         //need to figure out question makes (this is the third mark, but column 5) and setting the createdBy and updateBy to the logged in user. Grab from 
        // ps.setString(3, user.);
-        ps.setInt(2, address);
-        ps.setInt(2, address);
-        ps.setInt(2, address);
+        ps.setString(3, UserDAO.currentUser);
+        ps.setString(4, UserDAO.currentUser);
         ps.executeUpdate();
+        System.out.println("Added a customer!");
     }
     
     public static void deleteCustomer(int customerId) throws SQLException {

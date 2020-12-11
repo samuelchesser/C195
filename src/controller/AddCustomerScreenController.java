@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -41,21 +42,9 @@ public class AddCustomerScreenController implements Initializable {
     @FXML
     private Label addressLabel;
     @FXML
-    private Label cityLabel;
-    @FXML
-    private Label zipLabel;
-    @FXML
-    private Label phoneLabel;
-    @FXML
     private TextField customerNameTextField;
     @FXML
-    private TextField customerAddressTextField;
-    @FXML
-    private TextField customerZipTextField;
-    @FXML
-    private TextField customerPhoneTextField;
-    @FXML
-    private ComboBox<String> customerCityComboBox;
+    private ComboBox<String> customerAddressComboBox;
     @FXML
     private Button saveButton;
     @FXML
@@ -69,7 +58,7 @@ public class AddCustomerScreenController implements Initializable {
         try {
             ObservableList<Customer> customers = CustomerDAO.getCustomers();
             customers.forEach((customer) -> {
-            customerCityComboBox.getItems().addAll(customer.getCustomerCity());
+            customerAddressComboBox.getItems().addAll(customer.getAddressId() + ": " + customer.getCustomerAddress() + " - " + customer.getCustomerCity());
         });
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,12 +66,23 @@ public class AddCustomerScreenController implements Initializable {
     }
         
     @FXML
-    private void saveCustomer(ActionEvent event) {
+    private void saveCustomer(ActionEvent event) throws SQLException, IOException {
         String custName = customerNameTextField.getText();
-        String custAddress = customerAddressTextField.getText();
-        String custZip = customerZipTextField.getText();
-        String custPhone = customerPhoneTextField.getText();
-        String custCity = customerCityComboBox.getValue();
+        int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
+        System.out.println("Customer Name: " + custName);
+        System.out.println("Address combo box: " + custAddress);
+        CustomerDAO.addCustomer(custName, custAddress);
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success");
+        alert.setContentText("Customer " + custName + " successfully added");
+        alert.showAndWait();
+        
+        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+        Scene scene = new Scene(appointment);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
