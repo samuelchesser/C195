@@ -12,12 +12,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -99,30 +96,34 @@ public class AddAppointmentScreenController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        startHourComboBox.getItems().addAll(
-            "01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" ); 
-        startMinuteComboBox.getItems().addAll(
-            "00","15","30", "45");
-        endHourComboBox.getItems().addAll(
-            "01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" ); 
-        endMinuteComboBox.getItems().addAll(
-            "00","15","30", "45"); 
+        String[] hours = {"01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+        String[] minutes = {"00","15","30", "45"};
+        
+        //HERE
+        for (String hour : hours) {
+            startHourComboBox.getItems().addAll(hour);
+            endHourComboBox.getItems().addAll(hour);
+        }
+        for (String minute : minutes) {
+            startMinuteComboBox.getItems().addAll(minute);
+            endMinuteComboBox.getItems().addAll(minute);
+        }
     }
 
     @FXML
-    private void addAppointmentHandler(ActionEvent event) throws IOException {
+    private void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         //How to translate time? Here or in DAO?
         int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
         int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
         String apptType = apptTypeComboBox.getValue();
         String apptTitle = apptTitleTextField.getText();
         LocalDate apptDate = dateField.getValue();
-        int startHour = Integer.parseInt(startHourComboBox.getValue().substring(0,2));
-        int startMinute = Integer.parseInt(startMinuteComboBox.getValue().substring(0,2));
-        int endHour = Integer.parseInt(endHourComboBox.getValue().substring(0,2));
-        int endMinute = Integer.parseInt(endMinuteComboBox.getValue().substring(0,2));
+        String startHour = startHourComboBox.getValue();
+        String startMinute = startMinuteComboBox.getValue();
+        String endHour = endHourComboBox.getValue();
+        String endMinute = endMinuteComboBox.getValue();
 
-        AppointmentDAO.addAppointment();
+        AppointmentDAO.addAppointment(custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
         
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Success");

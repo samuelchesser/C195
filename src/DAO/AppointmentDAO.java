@@ -35,6 +35,7 @@ public class AppointmentDAO {
     public static String appointmentAlerts;
     static PreparedStatement ps;
     static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd");
+    static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     static LocalDateTime now = LocalDateTime.now();
     public static int foundAppts = 0;
     //static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd");
@@ -151,5 +152,28 @@ public class AppointmentDAO {
         }
         return appointmentAlert;*/
     return ldt.toString();
+    }
+    
+    public static Timestamp convertedDateTime(LocalDate date, String hour, String minute) {
+        String dateString = date.toString() + " " + hour + ":" + minute + ":00";
+        LocalDateTime convertedTime = LocalDateTime.parse(dateString,inputFormatter);
+        Timestamp convertedTs = Timestamp.valueOf(convertedTime);
+        return convertedTs;
+    }
+    
+    public static void addAppointment(int custId, int userId, String apptType, String apptTitle, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
+        String query = "INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?,?,?,Not Needed, Not Needed, Not Needed,?,Not Needed,?,?,CURRENT_TIMESTAMP,?,CURRENT_TIMESTAMP,?)";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setInt(1, custId);
+        ps.setInt(2, userId);
+        ps.setString(3, apptTitle);
+        ps.setString(4, apptType);
+        ps.setTimestamp(5, convertedDateTime(apptDate, startHour, startMinute));
+        ps.setTimestamp(6, convertedDateTime(apptDate, endHour, endMinute));
+        ps.setString(7, UserDAO.currentUser);
+        ps.setString(8, UserDAO.currentUser);
+        ps.executeUpdate();
+        System.out.println("Added a customer!");
     }
 }
