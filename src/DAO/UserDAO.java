@@ -54,14 +54,15 @@ public class UserDAO {
     
     public static ObservableList<User> getUsers() throws SQLException{
         ObservableList<User> users=FXCollections.observableArrayList();
-        String query = "SELECT user.userName FROM user WHERE active = 1";
+        String query = "SELECT user.userId, user.userName FROM user WHERE active = 1";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.execute();
         ResultSet result = ps.getResultSet();
                 
          while(result.next()) {
-               User user = new User(); 
+               User user = new User();
+               user.setUserId(result.getInt("user.userId"));
                user.setUserName(result.getString("user.userName"));
              
                users.add(user);

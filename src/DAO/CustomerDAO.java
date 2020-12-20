@@ -26,14 +26,15 @@ public class CustomerDAO {
     
     public static ObservableList<Customer> getCustomers() throws SQLException{
         ObservableList<Customer> customers=FXCollections.observableArrayList();
-        String query = "SELECT cust.customerName, a.addressId, a.address, city.city, a.postalCode, a.phone FROM customer cust INNER JOIN address a ON a.addressId = cust.addressId INNER JOIN city on a.cityId = city.cityId";
+        String query = "SELECT cust.customerId, cust.customerName, a.addressId, a.address, city.city, a.postalCode, a.phone FROM customer cust INNER JOIN address a ON a.addressId = cust.addressId INNER JOIN city on a.cityId = city.cityId";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.execute();
         ResultSet result = ps.getResultSet();
                 
          while(result.next()) {
-               Customer customer = new Customer(); 
+               Customer customer = new Customer();
+               customer.setcustomerId(result.getInt("cust.customerId"));
                customer.setCustomerName(result.getString("cust.customerName"));
                customer.setAddressId(result.getInt("a.addressId"));
                customer.setCustomerAddress(result.getString("a.address"));

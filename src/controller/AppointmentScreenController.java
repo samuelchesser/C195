@@ -81,6 +81,9 @@ public class AppointmentScreenController implements Initializable {
     private Button exitButton;
 
     String filterLength = "";
+    
+    private static Appointment apptToModify;
+    private static int apptToModifyId;
     @FXML
     private void filterSevenDays(ActionEvent event) throws SQLException {
         filterLength = "week";
@@ -118,6 +121,7 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     private void showAllAppts(ActionEvent event) throws SQLException {
         populateApptsTable("initial");
+        
     }
     
     @FXML
@@ -131,11 +135,25 @@ public class AppointmentScreenController implements Initializable {
 
     @FXML
     private void showModifyAppointmentScreen(ActionEvent event) throws IOException {
-        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml"));
+        apptToModify = appointmentsTableView.getSelectionModel().getSelectedItem();
+        apptToModifyId = apptToModify.getAppointmentId();
+        if (apptToModify == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No appointment selected");
+            alert.setContentText("You need to select an appointment to go to the modify screen. Please select an appointment.");
+            alert.showAndWait();
+        }
+        else {
+        //apptToModifyId = AppointmentDAO.getAppointmentToModify(apptToModify.getAppointmentId());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddAppointmentScreen.fxml"));
+        Parent appointment = (Parent) loader.load();
         Scene scene = new Scene(appointment);
+        AddAppointmentScreenController addController=loader.getController();
+        addController.setModifiedApptFields(apptToModify);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
     }
 
     @FXML
@@ -171,6 +189,12 @@ public class AppointmentScreenController implements Initializable {
         public void populateApptsTable(String context) throws SQLException {
             if (context.equals("initial")) {
                 appointmentsTableView.setItems(AppointmentDAO.getAppointments());
+                for (Appointment appointment : AppointmentDAO.getAppointments()) {
+                    System.out.println("Start time:" + appointment.getAppointmentStartTime());
+                    System.out.println("Formatted Start hour:" + AppointmentDAO.formattedTime(appointment.getAppointmentStartTime(), "hour"));
+                    System.out.println("Formatted Start minute:" + AppointmentDAO.formattedTime(appointment.getAppointmentStartTime(), "minute"));
+                    System.out.println("End time:" + appointment.getAppointmentEndTime());
+                }
             }
             else if (context.equals("filterDays")) {
                 appointmentsTableView.setItems(AppointmentDAO.filterDays(filterLength));    

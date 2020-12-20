@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,13 +70,16 @@ public class AddAppointmentScreenController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    
+    ObservableList<String> hours = FXCollections.observableArrayList("01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+    ObservableList<String> minutes = FXCollections.observableArrayList("00","15","30", "45");
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             //Need to update to pull in cust and consultant id
             ObservableList<Customer> customers = CustomerDAO.getCustomers();
             customers.forEach((customer) -> {
-            customerComboBox.getItems().addAll(customer.getCustomerName());
+            customerComboBox.getItems().addAll(customer.getCustomerId() + " " + customer.getCustomerName());
         });
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,7 +87,7 @@ public class AddAppointmentScreenController implements Initializable {
         try {
             ObservableList<User> users = UserDAO.getUsers();
             users.forEach((user) -> {
-            consultantComboBox.getItems().addAll(user.getUserName());
+            consultantComboBox.getItems().addAll(user.getUserId() + " " + user.getUserName());
         });
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,17 +100,15 @@ public class AddAppointmentScreenController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String[] hours = {"01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
-        String[] minutes = {"00","15","30", "45"};
         
         //HERE
         for (String hour : hours) {
-            startHourComboBox.getItems().addAll(hour);
-            endHourComboBox.getItems().addAll(hour);
+            startHourComboBox.setItems(hours);
+            endHourComboBox.setItems(hours);
         }
         for (String minute : minutes) {
-            startMinuteComboBox.getItems().addAll(minute);
-            endMinuteComboBox.getItems().addAll(minute);
+            startMinuteComboBox.setItems(minutes);
+            endMinuteComboBox.setItems(minutes);
         }
     }
 
@@ -145,6 +147,7 @@ public class AddAppointmentScreenController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    
 
     @FXML
     private void showCustomers(ActionEvent event) {
@@ -159,11 +162,37 @@ public class AddAppointmentScreenController implements Initializable {
     }
 
     @FXML
-    private void showMinutes(ActionEvent event) {
+    private void showStartMinutes(ActionEvent event) {
+        System.out.println("Start Minute selected: " + startMinuteComboBox.getValue());
     }
 
     @FXML
-    private void showHours(ActionEvent event) {
+    private void showStartHours(ActionEvent event) {
+    }
+
+    @FXML
+    private void showEndHours(ActionEvent event) {
+    }
+
+    @FXML
+    private void showEndMinutes(ActionEvent event) {
+    }
+    
+    @FXML
+    public void setModifiedApptFields(Appointment appointment) {
+        addAppointmentScreenTitle.setText("CAPA: Modify Appointment");
+        customerComboBox.setValue(appointment.getCustomerName());
+        consultantComboBox.setValue(appointment.getConsultantName());
+        apptTypeComboBox.setValue(appointment.getAppointmentType());
+        apptTitleTextField.setText(appointment.getAppointmentTitle());
+        //Format date and times
+        dateField.setValue(LocalDate.parse(appointment.getAppointmentDate(), AppointmentDAO.dateFormatter));
+        String appointmentStart = appointment.getAppointmentStartTime();
+        String appointmentEnd = appointment.getAppointmentEndTime();
+        startHourComboBox.setValue(AppointmentDAO.formattedTime(appointment.getAppointmentStartTime(), "hour"));
+        startMinuteComboBox.setValue(AppointmentDAO.formattedTime(appointment.getAppointmentStartTime(), "minute"));
+        endHourComboBox.setValue(AppointmentDAO.formattedTime(appointment.getAppointmentEndTime(), "hour"));
+        endMinuteComboBox.setValue(AppointmentDAO.formattedTime(appointment.getAppointmentEndTime(), "minute"));
     }
     
 }
