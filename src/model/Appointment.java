@@ -24,6 +24,7 @@ public class Appointment {
     private final IntegerProperty appointmentId;
     private final StringProperty customerName;
     private final StringProperty consultantName;
+    private final IntegerProperty consultantId;
     private final StringProperty appointmentType;
     private final StringProperty appointmentTitle;
     private LocalDate appointmentDate;
@@ -38,6 +39,7 @@ public class Appointment {
         appointmentId = new SimpleIntegerProperty();
         customerName = new SimpleStringProperty();
         consultantName = new SimpleStringProperty();
+        consultantId = new SimpleIntegerProperty();
         appointmentType = new SimpleStringProperty();
         appointmentTitle = new SimpleStringProperty();
         appointmentDateString = new SimpleStringProperty();
@@ -69,6 +71,15 @@ public class Appointment {
     public StringProperty consultantNameProp() { return consultantName; }
 
     public void setConsultantName(String consultantName) { this.consultantName.set(consultantName);}
+    
+    public int getConsultantId() {
+        System.out.println("Getting consultant ID: " + this.consultantId.get());
+        return this.consultantId.get();
+    }
+
+    public IntegerProperty consultantIdProp() { return consultantId; }
+
+    public void setConsultantId(int consultantId) { this.consultantId.set(consultantId);}
     
     public String getAppointmentType() {
         return this.appointmentType.get();

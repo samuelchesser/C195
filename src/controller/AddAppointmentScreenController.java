@@ -70,7 +70,7 @@ public class AddAppointmentScreenController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
+    public String context = "add";
     ObservableList<String> hours = FXCollections.observableArrayList("01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
     ObservableList<String> minutes = FXCollections.observableArrayList("00","15","30", "45");
     @Override
@@ -114,29 +114,55 @@ public class AddAppointmentScreenController implements Initializable {
 
     @FXML
     private void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
-        //How to translate time? Here or in DAO?
-        int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
-        int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
-        String apptType = apptTypeComboBox.getValue();
-        String apptTitle = apptTitleTextField.getText();
-        LocalDate apptDate = dateField.getValue();
-        String startHour = startHourComboBox.getValue();
-        String startMinute = startMinuteComboBox.getValue();
-        String endHour = endHourComboBox.getValue();
-        String endMinute = endMinuteComboBox.getValue();
+        if ("add".equals(context)) {
+            int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
+            int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
+            String apptType = apptTypeComboBox.getValue();
+            String apptTitle = apptTitleTextField.getText();
+            LocalDate apptDate = dateField.getValue();
+            String startHour = startHourComboBox.getValue();
+            String startMinute = startMinuteComboBox.getValue();
+            String endHour = endHourComboBox.getValue();
+            String endMinute = endMinuteComboBox.getValue();
 
-        AppointmentDAO.addAppointment(custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
-        
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Success");
-        alert.setContentText("Appt created for " + customerComboBox.getValue() + " on " + apptDate);
-        alert.showAndWait();
-        
-        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
-        Scene scene = new Scene(appointment);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+            AppointmentDAO.addAppointment(custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Appt created for " + customerComboBox.getValue() + " on " + apptDate);
+            alert.showAndWait();
+
+            Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+            Scene scene = new Scene(appointment);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
+        else if ("modify".equals(context)) {
+            int apptId = AppointmentScreenController.apptToModifyId;
+            int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
+            int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
+            String apptType = apptTypeComboBox.getValue();
+            String apptTitle = apptTitleTextField.getText();
+            LocalDate apptDate = dateField.getValue();
+            String startHour = startHourComboBox.getValue();
+            String startMinute = startMinuteComboBox.getValue();
+            String endHour = endHourComboBox.getValue();
+            String endMinute = endMinuteComboBox.getValue();
+
+            AppointmentDAO.modifyAppointment(apptId, custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Appt ID " + apptId + " modified!");
+            alert.showAndWait();
+
+            Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+            Scene scene = new Scene(appointment);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     @FXML
@@ -180,9 +206,10 @@ public class AddAppointmentScreenController implements Initializable {
     
     @FXML
     public void setModifiedApptFields(Appointment appointment) {
+        System.out.println(appointment);
         addAppointmentScreenTitle.setText("CAPA: Modify Appointment");
         customerComboBox.setValue(appointment.getCustomerName());
-        consultantComboBox.setValue(appointment.getConsultantName());
+        consultantComboBox.setValue(appointment.getConsultantId() + " " + appointment.getConsultantName());
         apptTypeComboBox.setValue(appointment.getAppointmentType());
         apptTitleTextField.setText(appointment.getAppointmentTitle());
         //Format date and times
