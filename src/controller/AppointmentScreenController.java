@@ -137,6 +137,8 @@ public class AppointmentScreenController implements Initializable {
     private void showModifyAppointmentScreen(ActionEvent event) throws IOException {
         apptToModify = appointmentsTableView.getSelectionModel().getSelectedItem();
         apptToModifyId = apptToModify.getAppointmentId();
+        System.out.println("Appt to modify: " + apptToModify);
+        System.out.println("Appt to modify ID: " + apptToModifyId);
         if (apptToModify == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No appointment selected");

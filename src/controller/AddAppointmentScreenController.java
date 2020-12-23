@@ -208,7 +208,7 @@ public class AddAppointmentScreenController implements Initializable {
     public void setModifiedApptFields(Appointment appointment) {
         System.out.println(appointment);
         addAppointmentScreenTitle.setText("CAPA: Modify Appointment");
-        customerComboBox.setValue(appointment.getCustomerName());
+        customerComboBox.setValue(appointment.getCustomerId() + " " + appointment.getCustomerName());
         consultantComboBox.setValue(appointment.getConsultantId() + " " + appointment.getConsultantName());
         apptTypeComboBox.setValue(appointment.getAppointmentType());
         apptTitleTextField.setText(appointment.getAppointmentTitle());

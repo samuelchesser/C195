@@ -42,7 +42,7 @@ public class AppointmentDAO {
     
     public static ObservableList<Appointment> getAppointments() throws SQLException{
         ObservableList<Appointment> appointments=FXCollections.observableArrayList();
-        String query = "SELECT customer.customerName, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId";
+        String query = "SELECT appointment.appointmentId, appointment.customerId, customer.customerName, appointment.userId, user.userName, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.execute();
@@ -55,8 +55,11 @@ public class AppointmentDAO {
                 
          while(result.next()) {
                Appointment appointment = new Appointment(); 
+               appointment.setAppointmentId(result.getInt("appointment.appointmentId"));
+               appointment.setCustomerId(result.getInt("appointment.customerId"));
                appointment.setCustomerName(result.getString("customer.customerName"));
                appointment.setConsultantName(result.getString("user.userName"));
+               appointment.setConsultantId(result.getInt("appointment.userId"));
                appointment.setAppointmentType(result.getString("appointment.type"));
                appointment.setAppointmentTitle(result.getString("appointment.title"));
                appointment.setAppointmentDate(dateFormatter.format(result.getTimestamp("appointment.start").toLocalDateTime().toLocalDate()));
@@ -214,7 +217,7 @@ public class AppointmentDAO {
     }
     
     public static void modifyAppointment(int apptId, int custId, int userId, String apptType, String apptTitle, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
-        String query = "UPDATE appointment SET customerId = ?, userId = ?, title = ?, description = 'Not Needed', location = 'Not Needed', contact = 'Not Needed', type = ?, url = 'Not Needed', start = ?, end = ?, lastUpdate = CURRENT_TIMESTAMP, lastUpdateBy = ? WHERE apptId = ?";
+        String query = "UPDATE appointment SET customerId = ?, userId = ?, title = ?, description = 'Not Needed', location = 'Not Needed', contact = 'Not Needed', type = ?, url = 'Not Needed', start = ?, end = ?, lastUpdate = CURRENT_TIMESTAMP, lastUpdateBy = ? WHERE appointmentId = ?";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.setInt(1, custId);
