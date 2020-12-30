@@ -61,6 +61,20 @@ public class CustomerDAO {
         System.out.println("Added a customer!");
     }
     
+    public static void modifyCustomer(String custName, int address, int custId) throws SQLException {
+        String query = "UPDATE customer SET  customerName = ?, addressId = ?, active = 1, lastUpdate = CURRENT_TIMESTAMP, lastUpdateBy = ? WHERE customerId = ?";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setString(1, custName);
+        ps.setInt(2, address);
+        //need to figure out question makes (this is the third mark, but column 5) and setting the createdBy and updateBy to the logged in user. Grab from 
+       // ps.setString(3, user.);
+        ps.setString(3, UserDAO.currentUser);
+        ps.setInt(4, custId);
+        ps.executeUpdate();
+        System.out.println("Added a customer!");
+    }
+    
     public static void deleteCustomer(int customerId) throws SQLException {
         String query = "DELETE FROM customer WHERE customerId = ?";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());

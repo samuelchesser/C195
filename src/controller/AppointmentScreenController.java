@@ -136,7 +136,6 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     private void showModifyAppointmentScreen(ActionEvent event) throws IOException {
         apptToModify = appointmentsTableView.getSelectionModel().getSelectedItem();
-        apptToModifyId = apptToModify.getAppointmentId();
         System.out.println("Appt to modify: " + apptToModify);
         System.out.println("Appt to modify ID: " + apptToModifyId);
         if (apptToModify == null) {
@@ -146,6 +145,7 @@ public class AppointmentScreenController implements Initializable {
             alert.showAndWait();
         }
         else {
+        apptToModifyId = apptToModify.getAppointmentId();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddAppointmentScreen.fxml"));
         Parent appointment = (Parent) loader.load();
         Scene scene = new Scene(appointment);
@@ -172,7 +172,28 @@ public class AppointmentScreenController implements Initializable {
     }
 
     @FXML
-    private void deleteAppointmentHandler(ActionEvent event) {
+    private void deleteAppointmentHandler(ActionEvent event) throws SQLException {
+        apptToModify = appointmentsTableView.getSelectionModel().getSelectedItem();
+        System.out.println("Appt to delete: " + apptToModify);
+        System.out.println("Appt to delete ID: " + apptToModifyId);
+        if (apptToModify == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No appointment selected");
+            alert.setContentText("Please select an appointment to delete first.");
+            alert.showAndWait();
+        }
+         else {
+            apptToModifyId = apptToModify.getAppointmentId();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete appointment?");
+            alert.setContentText("Clicking OK will delete the appointment. This can't be undone!");
+            
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                AppointmentDAO.deleteAppointment(apptToModifyId);
+                populateApptsTable("initial");
+            }
+        }
     }
 
     @FXML

@@ -231,6 +231,14 @@ public class AppointmentDAO {
         ps.executeUpdate();
     }
     
+    public static void deleteAppointment(int apptId) throws SQLException {
+        String query = "DELETE FROM appointment WHERE appointmentId = ?";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setInt(1, apptId);
+        ps.executeUpdate();
+    }
+    
     public static String formattedTime(String appointmentDate, String type) {
         String formattedTime = null;
         if ("hour".equals(type)) {

@@ -53,6 +53,7 @@ public class AddCustomerScreenController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    public String context = "add";
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -67,6 +68,7 @@ public class AddCustomerScreenController implements Initializable {
         
     @FXML
     private void saveCustomer(ActionEvent event) throws SQLException, IOException {
+        if ("add".equals(context)) {
         String custName = customerNameTextField.getText();
         int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
         System.out.println("Customer Name: " + custName);
@@ -83,6 +85,27 @@ public class AddCustomerScreenController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+        }
+        else if ("modify".equals(context)) {
+        String custName = customerNameTextField.getText();
+        int custId = CustomersScreenController.custToModifyId;
+        int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
+        System.out.println("Customer Name: " + custName);
+        System.out.println("Address combo box: " + custAddress);
+        CustomerDAO.modifyCustomer(custName, custAddress, custId);
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success");
+        alert.setContentText("Customer " + custName + " successfully modified!");
+        alert.showAndWait();
+        
+        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+        Scene scene = new Scene(appointment);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+        }
+        
     }
 
     @FXML
@@ -92,6 +115,14 @@ public class AddCustomerScreenController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+    
+    @FXML
+    public void setModifiedCustFields(Customer customer) {
+        System.out.println(customer);
+        addCustomerScreenTitle.setText("CAPA: Modify Customer");
+        customerAddressComboBox.setValue(customer.getCustomerAddress());
+        customerNameTextField.setText(customer.getCustomerName());
     }
     
 }

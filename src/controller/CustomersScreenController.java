@@ -50,6 +50,9 @@ public class CustomersScreenController implements Initializable {
     private TableColumn<Customer, String> zipColumn;
     @FXML
     private TableColumn<Customer, String> phoneColumn;
+    
+    private static Customer custToModify;
+    public static int custToModifyId;
 
     
     public void populateCustomersTable() throws SQLException {
@@ -83,29 +86,58 @@ public class CustomersScreenController implements Initializable {
 
     @FXML
     private void showModifyCustomerScreen(ActionEvent event) throws IOException {
-        Parent customers = FXMLLoader.load(getClass().getResource("/view/AddCustomerScreen.fxml"));
-        Scene scene = new Scene(customers);
+        custToModify = customersTableView.getSelectionModel().getSelectedItem();
+        System.out.println("Cust to modify: " + custToModify);
+        System.out.println("Cust to modify ID: " + custToModifyId);
+        if (custToModify == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No customer selected");
+            alert.setContentText("You need to select a customer to go to the modify screen. Please select a customer.");
+            alert.showAndWait();
+        }
+        else {
+        custToModifyId = custToModify.getCustomerId();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddCustomerScreen.fxml"));
+        Parent customer = (Parent) loader.load();
+        Scene scene = new Scene(customer);
+        AddCustomerScreenController addController=loader.getController();
+        addController.setModifiedCustFields(custToModify);
+        addController.context = "modify";
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
+    }
 
     @FXML
     private void deleteCustomer(ActionEvent event) throws SQLException {
-        Customer customer = customersTableView.getSelectionModel().getSelectedItem();
+        Customer custToModify = customersTableView.getSelectionModel().getSelectedItem();
+        if (custToModify == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No customer selected");
+            alert.setContentText("Please select a customer to delete first.");
+            alert.showAndWait();
+        }
+        else {
+        custToModifyId = custToModify.getCustomerId();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm customer deletion");
-        alert.setContentText("Please confirm you want to delete the following customer: " + customer.getCustomerName());
+        alert.setContentText("Please confirm you want to delete the following customer: " + custToModify.getCustomerName());
         Optional<ButtonType> confirmation = alert.showAndWait();
 
         if (confirmation.get() == ButtonType.OK) {
-          //  deleteCustomer(customer);
+            CustomerDAO.deleteCustomer(custToModifyId);
             populateCustomersTable();
+        }
         }
     }
 
     @FXML
-    private void showAppointmentScreen(ActionEvent event) {
+    private void showAppointmentScreen(ActionEvent event) throws IOException {
+        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+        Scene scene = new Scene(appointment);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
-    
 }
