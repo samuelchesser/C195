@@ -101,15 +101,10 @@ public class AddAppointmentScreenController implements Initializable {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //HERE
-        for (String hour : hours) {
             startHourComboBox.setItems(hours);
             endHourComboBox.setItems(hours);
-        }
-        for (String minute : minutes) {
             startMinuteComboBox.setItems(minutes);
             endMinuteComboBox.setItems(minutes);
-        }
     }
 
     @FXML
