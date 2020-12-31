@@ -160,15 +160,20 @@ public class AppointmentScreenController implements Initializable {
 
     @FXML
     private void showCustomersScreen(ActionEvent event) throws IOException {
-        Parent appointment = FXMLLoader.load(getClass().getResource("/view/CustomersScreen.fxml"));
-        Scene scene = new Scene(appointment);
+        Parent customer = FXMLLoader.load(getClass().getResource("/view/CustomersScreen.fxml"));
+        Scene scene = new Scene(customer);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
 
     @FXML
-    private void showReportsScreen(ActionEvent event) {
+    private void showReportsScreen(ActionEvent event) throws IOException {
+        Parent reports = FXMLLoader.load(getClass().getResource("/view/TypePercentageReportScreen.fxml"));
+        Scene scene = new Scene(reports);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

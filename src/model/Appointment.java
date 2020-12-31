@@ -34,6 +34,8 @@ public class Appointment {
     private final StringProperty appointmentDateString;
     private final StringProperty appointmentStartString;
     private final StringProperty appointmentEndString;
+    private final StringProperty appointmentTypeCount;
+    private final StringProperty totalApptsCount;
 
     
     public Appointment() {
@@ -47,6 +49,8 @@ public class Appointment {
         appointmentDateString = new SimpleStringProperty();
         appointmentStartString = new SimpleStringProperty();
         appointmentEndString = new SimpleStringProperty();
+        appointmentTypeCount = new SimpleStringProperty();
+        totalApptsCount = new SimpleStringProperty();
         
     }
     
@@ -133,6 +137,22 @@ public class Appointment {
 
 
     public void setAppointmentEnd(String appointmentEndString) { this.appointmentEndString.set(appointmentEndString);}
+    
+    public String getAppointmentTypeCount() {
+        return this.appointmentTypeCount.get();
+    }
+
+    public StringProperty appointmentTypeCountProp() { return appointmentTypeCount; }
+
+    public void setAppointmentTypeCount(String appointmentTypeCount) { this.appointmentTypeCount.set(appointmentTypeCount);}
+    
+    public String getTotalApptsCount() {
+        return this.totalApptsCount.get();
+    }
+
+    public StringProperty totalApptsCountProp() { return totalApptsCount; }
+
+    public void setTotalApptsCount(String totalApptsCount) { this.totalApptsCount.set(totalApptsCount);}
 
     @Override
     public String toString() {

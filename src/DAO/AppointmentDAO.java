@@ -33,6 +33,8 @@ import model.Customer;
  */
 public class AppointmentDAO {
     public static String appointmentAlerts;
+    public static int appointmentTypeCount;
+    public static double allApptsCount;
     static PreparedStatement ps;
     public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
     static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -237,6 +239,49 @@ public class AppointmentDAO {
         ps = DBQuery.getPreparedStatement();
         ps.setInt(1, apptId);
         ps.executeUpdate();
+    }
+    
+    public static ObservableList<Appointment> getAppointmentsByMonth() throws SQLException {
+        LocalDateTime filter = now.plusMonths(1);
+        Timestamp filterTS = Timestamp.valueOf(filter);
+        Timestamp todayTS = Timestamp.valueOf(now);
+        String totalApptQuery = "SELECT * FROM appointment WHERE appointment.start <= ? AND appointment.start >= ?";
+        DBQuery.setPreparedStatement(totalApptQuery, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setTimestamp(1, filterTS);
+        ps.setTimestamp(2, todayTS);
+        ps.execute();
+        ResultSet totalAppts = ps.getResultSet();
+        totalAppts.last();
+        allApptsCount = totalAppts.getRow();
+        
+        ObservableList<Appointment> appointmentTypes=FXCollections.observableArrayList();
+        String query = "SELECT DISTINCT appointment.type FROM appointment";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+        
+        while(result.next()) {
+            Appointment appointment = new Appointment();
+            appointment.setAppointmentType(result.getString("appointment.type"));
+            String countQuery = "SELECT * FROM appointment WHERE appointment.type = ? AND appointment.start <= ? AND appointment.start >= ?";
+            DBQuery.setPreparedStatement(countQuery, DBConnection.getConnection());
+            ps = DBQuery.getPreparedStatement();
+            ps.setString(1, result.getString("appointment.type"));
+            ps.setTimestamp(2, filterTS);
+            ps.setTimestamp(3, todayTS);
+            ps.execute();
+            ResultSet count = ps.getResultSet();
+            count.last();
+            appointmentTypeCount = count.getRow();
+            appointment.setAppointmentTypeCount(String.valueOf(appointmentTypeCount));
+            appointment.setTotalApptsCount(String.valueOf(appointmentTypeCount / allApptsCount));
+            System.out.println("Total appts count: " + allApptsCount);
+            System.out.println("Appointment type and count: " + result.getString("appointment.type") + " count: " + appointmentTypeCount);
+            appointmentTypes.add(appointment);
+        }
+        return appointmentTypes;
     }
     
     public static String formattedTime(String appointmentDate, String type) {

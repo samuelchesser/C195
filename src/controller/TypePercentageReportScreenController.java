@@ -5,10 +5,14 @@
  */
 package controller;
 
+import DAO.AppointmentDAO;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import model.Appointment;
 
 /**
  * FXML Controller class
@@ -34,29 +39,29 @@ public class TypePercentageReportScreenController implements Initializable {
     @FXML
     private Label reportsScreenTitle;
     @FXML
-    private TableView<?> appointmentsByMonthReportTable;
+    private TableView<Appointment> appointmentsByMonthReportTable;
     @FXML
-    private TableColumn<?, ?> appointmentTypeColumn;
+    private TableColumn<Appointment, String> appointmentTypeColumn;
     @FXML
-    private TableColumn<?, ?> nextMonthCountColumn;
+    private TableColumn<Appointment, String> nextMonthCountColumn;
     @FXML
-    private TableColumn<?, ?> percentColumn;
+    private TableColumn<Appointment, String> percentColumn;
     @FXML
-    private TableView<?> consultantAppointmentsReportTable;
+    private TableView<Appointment> consultantAppointmentsReportTable;
     @FXML
-    private TableColumn<?, ?> consultantColumn;
+    private TableColumn<Appointment, String> consultantColumn;
     @FXML
-    private TableColumn<?, ?> kickoffColumn;
+    private TableColumn<Appointment, Integer> kickoffColumn;
     @FXML
-    private TableColumn<?, ?> checkinColumn;
+    private TableColumn<Appointment, Integer> checkinColumn;
     @FXML
-    private TableColumn<?, ?> retroColumn;
+    private TableColumn<Appointment, Integer> retroColumn;
     @FXML
-    private TableColumn<?, ?> launchColumn;
+    private TableColumn<Appointment, Integer> launchColumn;
     @FXML
-    private TableColumn<?, ?> trainingColumn;
+    private TableColumn<Appointment, Integer> trainingColumn;
     @FXML
-    private TableColumn<?, ?> totalColumn;
+    private TableColumn<Appointment, Integer> totalColumn;
     @FXML
     private Button showAppointmentScreen;
     @FXML
@@ -65,10 +70,23 @@ public class TypePercentageReportScreenController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    
+    public void populateApptTypeByMonthTable() throws SQLException {
+        appointmentsByMonthReportTable.setItems(AppointmentDAO.getAppointmentsByMonth());
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        appointmentTypeColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentTypeProp());
+        nextMonthCountColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentTypeCountProp());
+        percentColumn.setCellValueFactory(cellData -> cellData.getValue().totalApptsCountProp());
+        try {
+            populateApptTypeByMonthTable();
+            //HERE Where to do calculation of percentages?
+        } catch (SQLException ex) {
+            Logger.getLogger(AppointmentScreenController.class.getName()).log(Level.WARNING, null, ex);
+        }
     }    
+   
 
     @FXML
     private void displayAppointmentScreen(ActionEvent event) throws IOException {
