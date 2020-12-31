@@ -6,6 +6,7 @@
 package controller;
 
 import DAO.AppointmentDAO;
+import DAO.UserDAO;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -28,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.User;
 
 /**
  * FXML Controller class
@@ -47,21 +49,21 @@ public class TypePercentageReportScreenController implements Initializable {
     @FXML
     private TableColumn<Appointment, String> percentColumn;
     @FXML
-    private TableView<Appointment> consultantAppointmentsReportTable;
+    private TableView<User> consultantAppointmentsReportTable;
     @FXML
-    private TableColumn<Appointment, String> consultantColumn;
+    private TableColumn<User, String> consultantColumn;
     @FXML
-    private TableColumn<Appointment, Integer> kickoffColumn;
+    private TableColumn<User, String> kickoffColumn;
     @FXML
-    private TableColumn<Appointment, Integer> checkinColumn;
+    private TableColumn<User, String> checkinColumn;
     @FXML
-    private TableColumn<Appointment, Integer> retroColumn;
+    private TableColumn<User, String> retroColumn;
     @FXML
-    private TableColumn<Appointment, Integer> launchColumn;
+    private TableColumn<User, String> launchColumn;
     @FXML
-    private TableColumn<Appointment, Integer> trainingColumn;
+    private TableColumn<User, String> trainingColumn;
     @FXML
-    private TableColumn<Appointment, Integer> totalColumn;
+    private TableColumn<User, String> totalColumn;
     @FXML
     private Button showAppointmentScreen;
     @FXML
@@ -74,14 +76,24 @@ public class TypePercentageReportScreenController implements Initializable {
     public void populateApptTypeByMonthTable() throws SQLException {
         appointmentsByMonthReportTable.setItems(AppointmentDAO.getAppointmentsByMonth());
     }
+    public void populateConsultantAppointmentsReportTable() throws SQLException {
+        consultantAppointmentsReportTable.setItems(UserDAO.getConsultantMonthlyApts());
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appointmentTypeColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentTypeProp());
         nextMonthCountColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentTypeCountProp());
         percentColumn.setCellValueFactory(cellData -> cellData.getValue().totalApptsCountProp());
+        consultantColumn.setCellValueFactory(cellData -> cellData.getValue().userNameProp());
+        kickoffColumn.setCellValueFactory(cellData -> cellData.getValue().kickoffCountProp());
+        checkinColumn.setCellValueFactory(cellData -> cellData.getValue().checkinCountProp());
+        retroColumn.setCellValueFactory(cellData -> cellData.getValue().retroCountProp());
+        launchColumn.setCellValueFactory(cellData -> cellData.getValue().launchCountProp());
+        trainingColumn.setCellValueFactory(cellData -> cellData.getValue().trainingCountProp());
+        totalColumn.setCellValueFactory(cellData -> cellData.getValue().totalCountProp());
         try {
             populateApptTypeByMonthTable();
-            //HERE Where to do calculation of percentages?
+            populateConsultantAppointmentsReportTable();
         } catch (SQLException ex) {
             Logger.getLogger(AppointmentScreenController.class.getName()).log(Level.WARNING, null, ex);
         }

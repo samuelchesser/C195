@@ -284,6 +284,7 @@ public class AppointmentDAO {
         return appointmentTypes;
     }
     
+    
     public static String formattedTime(String appointmentDate, String type) {
         String formattedTime = null;
         if ("hour".equals(type)) {
