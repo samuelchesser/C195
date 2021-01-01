@@ -50,16 +50,12 @@ public class UserDAO {
 
     ResultSet result = ps.getResultSet();
     while(result.next()) {
-       if (result.getString("userName").equals(userName) && result.getString("password").equals(password))
-       {
+       if (result.getString("userName").equals(userName) && result.getString("password").equals(password)) {
            System.out.println("Match");
            currentUser = result.getString("userName");
-           AppointmentDAO.getAppointmentsAlert();
            return true;
-           
-           
        }          
-    } 
+    }
     return false;
     
     }

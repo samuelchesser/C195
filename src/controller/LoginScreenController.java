@@ -53,15 +53,18 @@ public class LoginScreenController implements Initializable {
     @FXML
     private Button exitButton;
     
-    //If this isn't working, channge file names to rb_ru and this to Languages/rb
     ResourceBundle rb = ResourceBundle.getBundle("Languages/loginScreen", Locale.getDefault());
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        setTextLabels();
     }    
 
     @FXML
@@ -83,15 +86,21 @@ public class LoginScreenController implements Initializable {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
-                AppointmentDAO.getAppointmentsAlert();
+                if (AppointmentDAO.getAppointmentsAlert(user)) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Appointments starting soon!");
+                alert.setHeaderText("Appts within 15 minutes");
+                alert.setContentText("You have an appointment within 15 minutes! Better hop to it!");
+                alert.showAndWait();
+                }
                 logger.write("Successful login by " + user + " at: " + loginTime);
                 logger.newLine();
                 logger.close();
-                
-
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle(rb.getString("title"));
+                alert.setHeaderText(rb.getString("header"));
                 alert.setContentText(rb.getString("notFoundError"));
                 alert.showAndWait();
                 logger.write("Failed login attempt by " + user + " at: " + loginTime);
@@ -101,6 +110,8 @@ public class LoginScreenController implements Initializable {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(rb.getString("title"));
+            alert.setHeaderText(rb.getString("header"));
             alert.setContentText(rb.getString("blankError"));
             alert.showAndWait();
             logger.write("Empty login attempt detected at: " + loginTime);
@@ -120,6 +131,15 @@ public class LoginScreenController implements Initializable {
         } else {
             System.out.println("User canceled, returning to application.");
         }
+    }
+    
+    @FXML
+    public void setTextLabels() {
+        loginScreenTitle.setText(rb.getString("loginScreenTitle"));
+        usernameLabel.setText(rb.getString("usernameLabel"));
+        passwordLabel.setText(rb.getString("passwordLabel"));
+        loginButton.setText(rb.getString("loginButton"));
+        exitButton.setText(rb.getString("exitButton"));
     }
     
 }

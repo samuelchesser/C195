@@ -7,8 +7,11 @@ package c195;
 
 import DAO.UserDAO;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -26,6 +29,7 @@ public class C195 extends Application {
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
         mainStage.show();
+        ResourceBundle rb = ResourceBundle.getBundle("Languages/loginScreen", Locale.getDefault());
     }
 
     /**

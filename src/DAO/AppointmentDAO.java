@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import static DAO.UserDAO.ps;
 import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,11 +16,13 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import javafx.collections.FXCollections;
 import model.Appointment;
 import utils.DBConnection;
@@ -39,6 +42,8 @@ public class AppointmentDAO {
     public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
     static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     static LocalDateTime now = LocalDateTime.now();
+    static Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    
     public static int foundAppts = 0;
     //static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd");
     
@@ -54,6 +59,16 @@ public class AppointmentDAO {
       /* int columnsNumber = rsmd.getColumnCount();
         System.out.println("Result Set: " + result.toString());
       */
+      
+      
+      //LocalDateTime ldt = LocalDateTime.now();
+       // ZonedDateTime zdt = ldt.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+       // ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("UTC"));
+        //LocalDateTime ldtIn = utczdt.toLocalDateTime();
+        
+        //ZonedDateTime zdtOut = ldtIn.atZone(ZoneId.of("UTC"));
+        //ZonedDateTime zdtOutToLocalTZ = zdtOut.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString()));
+        //LocalDateTime ldtOutFinal = zdtOutToLocalTZ.toLocalDateTime();
                 
          while(result.next()) {
                Appointment appointment = new Appointment(); 
@@ -65,8 +80,17 @@ public class AppointmentDAO {
                appointment.setAppointmentType(result.getString("appointment.type"));
                appointment.setAppointmentTitle(result.getString("appointment.title"));
                appointment.setAppointmentDate(dateFormatter.format(result.getTimestamp("appointment.start").toLocalDateTime().toLocalDate()));
-               appointment.setAppointmentStart(result.getTimestamp("appointment.start").toLocalDateTime().toLocalTime().toString());
-               appointment.setAppointmentEnd(result.getTimestamp("appointment.end").toLocalDateTime().toLocalTime().toString());
+               LocalDateTime startTime = (result.getTimestamp("appointment.start").toLocalDateTime());
+               ZonedDateTime startZdt = ZonedDateTime.of(startTime, ZoneId.of("UTC"));
+               ZonedDateTime utcStart = startZdt.withZoneSameInstant(ZoneOffset.systemDefault());
+               LocalDateTime startOut = utcStart.toLocalDateTime(); 
+               LocalDateTime endTime = (result.getTimestamp("appointment.end").toLocalDateTime());
+               ZonedDateTime endZdt = ZonedDateTime.of(endTime, ZoneId.of("UTC"));
+               ZonedDateTime utcEnd = endZdt.withZoneSameInstant(ZoneOffset.systemDefault());
+               LocalDateTime endOut = utcEnd.toLocalDateTime();
+               appointment.setAppointmentStart(startOut.toLocalTime().toString());
+               appointment.setAppointmentEnd(endOut.toLocalTime().toString());
+               //ZonedDateTime zdt = result.getTimestamp("appointment.end").toLocalDateTime().atZone(ZoneId.of(ZoneId.systemDefault().toString()));
                
                appointments.add(appointment);
              
@@ -109,7 +133,7 @@ public class AppointmentDAO {
                appointment.setAppointmentType(result.getString("appointment.type"));
                appointment.setAppointmentTitle(result.getString("appointment.title"));
                appointment.setAppointmentDate(dateFormatter.format(result.getTimestamp("appointment.start").toLocalDateTime().toLocalDate()));
-               appointment.setAppointmentStart(result.getTimestamp("appointment.start").toLocalDateTime().toLocalTime().toString());
+               appointment.setAppointmentStart(ZonedDateTime.of(result.getTimestamp("appointment.start").toLocalDateTime(), ZoneId.systemDefault()).toString());
                appointment.setAppointmentEnd(result.getTimestamp("appointment.end").toLocalDateTime().toLocalTime().toString());
                
                appointments.add(appointment);
@@ -118,7 +142,6 @@ public class AppointmentDAO {
          }
         return appointments;
     }
-    
     public static ObservableList<Appointment> getAppointmentToModify(int apptId) throws SQLException{
         ObservableList<Appointment> appointments=FXCollections.observableArrayList();
         String query = "SELECT appointment.appointmentId, customer.customerName, user.userName, appointment.userId, appointment.type, appointment.title, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId INNER JOIN user on user.userId = appointment.userId WHERE appointmentId = ?";
@@ -137,9 +160,11 @@ public class AppointmentDAO {
                appointment.setAppointmentType(result.getString("appointment.type"));
                appointment.setAppointmentTitle(result.getString("appointment.title"));
                appointment.setAppointmentDate(dateFormatter.format(result.getTimestamp("appointment.start").toLocalDateTime().toLocalDate()));
-               appointment.setAppointmentStart(result.getTimestamp("appointment.start").toLocalDateTime().toLocalTime().toString());
+               appointment.setAppointmentStart(ZonedDateTime.of(result.getTimestamp("appointment.start").toLocalDateTime(), ZoneId.systemDefault()).toString());
                appointment.setAppointmentEnd(result.getTimestamp("appointment.end").toLocalDateTime().toLocalTime().toString());
                
+               
+               appointment.setAppointmentStart(result.getTimestamp("appointment.start").toLocalDateTime().toLocalTime().toString());
                appointments.add(appointment);
                System.out.println("Consultant ID from getApptToModify: " + result.getInt("appointment.userId"));
              
@@ -159,51 +184,39 @@ public class AppointmentDAO {
     
     //public static Boolean alertableAppointments() {
     
-    public static String getAppointmentsAlert() throws SQLException {
-        //Figure out conversion and query from here
-        LocalDateTime ldt = LocalDateTime.now();
-        ZonedDateTime zdt = ldt.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
-        ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime ldtIn = utczdt.toLocalDateTime();
-        
-        ZonedDateTime zdtOut = ldtIn.atZone(ZoneId.of("UTC"));
-        ZonedDateTime zdtOutToLocalTZ = zdtOut.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString()));
-        LocalDateTime ldtOutFinal = zdtOutToLocalTZ.toLocalDateTime();
-        LocalDate ldOut = ldtOutFinal.toLocalDate();
-        System.out.println(ldt);
-        System.out.println(zdt);
-        System.out.println(utczdt);
-        System.out.println(ldtIn);
-        System.out.println(zdtOut);
-        System.out.println(zdtOutToLocalTZ);
-        System.out.println(ldtOutFinal);
-        System.out.println(ldOut);
-       /* String query = "SELECT count(*) FROM appointment WHERE ";
-        String query = "SELECT customer.customerName, appointment.type, appointment.start, appointment.end FROM appointment INNER JOIN customer ON customer.customerId = appointment.customerId";
-        String appointmentAlert = "Hello! The following appointments  are scheduled in the next 15 minutes: \n";
-        Boolean alertableAppointments = false;
-        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
-        ps = DBQuery.getPreparedStatement();
-        ps.execute();
-        ResultSet result = ps.getResultSet();
-        while(result.next()) { 
-               String customer = result.getString("customer.customerName");
-               String appointmentType = result.getString("appointment.type");
-               appointmentAlert = appointmentAlert + customer + " for a " + appointmentType + "\n";
-               alertableAppointments = true;
-        }
-        return appointmentAlert;*/
-    return ldt.toString();
+    public static boolean getAppointmentsAlert(String userName) throws SQLException {
+           boolean appointmentAlert = false; 
+           LocalDateTime todayLDT = Timestamp.valueOf(now).toLocalDateTime();
+           ZonedDateTime locZdt = ZonedDateTime.of(todayLDT, ZoneId.systemDefault());
+           ZonedDateTime utcZdt = locZdt.withZoneSameInstant(ZoneOffset.UTC);
+           LocalDateTime ldtOut = utcZdt.toLocalDateTime();
+           Timestamp convertedTs = Timestamp.valueOf(ldtOut);
+           Timestamp fifteenAfter = new Timestamp(convertedTs.getTime() + 900000);
+           String query = "SELECT appointment.title FROM appointment INNER JOIN user ON appointment.userId = user.userId WHERE user.userName = ? AND appointment.start BETWEEN ? AND ?";
+           DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+           ps = DBQuery.getPreparedStatement();
+           ps.setString(1, userName);
+           ps.setTimestamp(2, convertedTs);
+           ps.setTimestamp(3, fifteenAfter);
+           ps.execute();
+           ResultSet result = ps.getResultSet();
+           if (result.next()) {
+               appointmentAlert = true;
+           }
+           return appointmentAlert;
     }
     
     public static Timestamp convertedDateTime(LocalDate date, String hour, String minute) {
         String dateString = date.toString() + " " + hour + ":" + minute + ":00"; 
-        ZonedDateTime utcTime = LocalDateTime.parse(dateString,inputFormatter).atZone(ZoneId.of("UTC"));
-        Timestamp convertedTs = Timestamp.from(utcTime.toInstant());
+        LocalDateTime ldt = LocalDateTime.parse(dateString,inputFormatter);
+        ZonedDateTime locZdt = ZonedDateTime.of(ldt, ZoneId.systemDefault());
+        ZonedDateTime utcZdt = locZdt.withZoneSameInstant(ZoneOffset.UTC);
+        LocalDateTime ldtOut = utcZdt.toLocalDateTime();
+        Timestamp convertedTs = Timestamp.valueOf(ldtOut);
         return convertedTs;
     }
     
-    public static void addAppointment(int custId, int userId, String apptType, String apptTitle, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
+    public static void addAppointment(int custId, int userId, String apptType, String apptTitle, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException { 
         String query = "INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?,?,?,'Not Needed', 'Not Needed', 'Not Needed',?,'Not Needed',?,?,CURRENT_TIMESTAMP,?,CURRENT_TIMESTAMP,?)";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
@@ -211,8 +224,8 @@ public class AppointmentDAO {
         ps.setInt(2, userId);
         ps.setString(3, apptTitle);
         ps.setString(4, apptType);
-        ps.setTimestamp(5, convertedDateTime(apptDate, startHour, startMinute));
-        ps.setTimestamp(6, convertedDateTime(apptDate, endHour, endMinute));
+        ps.setTimestamp(5, convertedDateTime(apptDate, startHour, startMinute), cal);
+        ps.setTimestamp(6, convertedDateTime(apptDate, endHour, endMinute), cal);
         ps.setString(7, UserDAO.currentUser);
         ps.setString(8, UserDAO.currentUser);
         ps.executeUpdate();
@@ -282,6 +295,25 @@ public class AppointmentDAO {
             appointmentTypes.add(appointment);
         }
         return appointmentTypes;
+    }
+    
+    public static String validateApptTime(int userId, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
+        String validTime = "true";
+        String query = "SELECT * FROM appointment WHERE appointment.userId = ? AND ? BETWEEN appointment.start AND appointment.end";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setInt(1, userId);
+        ps.setTimestamp(2, convertedDateTime(apptDate, startHour, startMinute), cal);
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+        if (result.next()) {
+            validTime = "overlap";
+        }
+        
+        if (Integer.parseInt(startHour) > 17 || (Integer.parseInt(endHour) > 18)) {
+            validTime = "outsideHours";
+        }
+        return validTime;
     }
     
     
