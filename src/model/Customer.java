@@ -20,6 +20,7 @@ public class Customer {
     private final IntegerProperty addressId;
     private final StringProperty customerAddress;
     private final StringProperty customerCity;
+    private final IntegerProperty cityId;
     private final StringProperty customerZip;
     private final StringProperty customerPhone;
 
@@ -33,6 +34,7 @@ public class Customer {
         customerCity = new SimpleStringProperty();
         customerZip = new SimpleStringProperty();
         customerPhone = new SimpleStringProperty();
+        cityId = new SimpleIntegerProperty();
 
     }
     
@@ -91,6 +93,14 @@ public class Customer {
     public StringProperty customerPhoneProp() { return customerPhone; }
 
     public void setCustomerPhone(String customerPhone) { this.customerPhone.set(customerPhone);}
+    
+    public int getCityId() {
+        return this.cityId.get();
+    }
+
+    public IntegerProperty cityIdProp() { return cityId; }
+
+    public void setCityId(int cityId) { this.cityId.set(cityId);}
 
     @Override
     public String toString() {

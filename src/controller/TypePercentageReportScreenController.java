@@ -73,9 +73,21 @@ public class TypePercentageReportScreenController implements Initializable {
      * Initializes the controller class.
      */
     
+    /*
+    This table is for task requirement I-1 "number of appointment types by month"
+    It looks forward 30 days (one month) and lists out how many of each appointment type there are,
+    and what percentage of all appointments over the 30 days they make up
+    */
     public void populateApptTypeByMonthTable() throws SQLException {
         appointmentsByMonthReportTable.setItems(AppointmentDAO.getAppointmentsByMonth());
     }
+    
+    /*
+    This table is for task requirement I-3 "one additional report of your choice"
+    It pulls in every consultant (user) and lists the number of appointments they 
+    have of each type for the next 30 days, as well as their total appointments
+    for the next 30 days
+    */
     public void populateConsultantAppointmentsReportTable() throws SQLException {
         consultantAppointmentsReportTable.setItems(UserDAO.getConsultantMonthlyApts());
     }

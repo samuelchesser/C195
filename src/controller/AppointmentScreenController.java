@@ -84,6 +84,10 @@ public class AppointmentScreenController implements Initializable {
     
     private static Appointment apptToModify;
     public static int apptToModifyId;
+    
+    /*
+    The following 2 actions fulfill requirement D "Provide the ability to view the calendar by month and by week."
+    */
     @FXML
     private void filterSevenDays(ActionEvent event) throws SQLException {
         filterLength = "week";

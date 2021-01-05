@@ -47,14 +47,30 @@ public class CustomerDAO {
         return customers;
     }
     
+    public static ObservableList<Customer> getCities() throws SQLException{
+        ObservableList<Customer> customers=FXCollections.observableArrayList();
+        String query = "SELECT DISTINCT city.cityId, city.city FROM city";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+                
+         while(result.next()) {
+               Customer customer = new Customer();
+               customer.setCustomerCity(result.getString("city.city"));
+               customer.setCityId(result.getInt("city.cityid"));
+               customers.add(customer);
+          
+       }
+        return customers;
+    }
+    
     public static void addCustomer(String custName, int address) throws SQLException {
         String query = "INSERT INTO customer (customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?,?,1,CURRENT_TIMESTAMP,?,CURRENT_TIMESTAMP,?)";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.setString(1, custName);
         ps.setInt(2, address);
-        //need to figure out question makes (this is the third mark, but column 5) and setting the createdBy and updateBy to the logged in user. Grab from 
-       // ps.setString(3, user.);
         ps.setString(3, UserDAO.currentUser);
         ps.setString(4, UserDAO.currentUser);
         ps.executeUpdate();
@@ -67,8 +83,6 @@ public class CustomerDAO {
         ps = DBQuery.getPreparedStatement();
         ps.setString(1, custName);
         ps.setInt(2, address);
-        //need to figure out question makes (this is the third mark, but column 5) and setting the createdBy and updateBy to the logged in user. Grab from 
-       // ps.setString(3, user.);
         ps.setString(3, UserDAO.currentUser);
         ps.setInt(4, custId);
         ps.executeUpdate();
@@ -81,6 +95,38 @@ public class CustomerDAO {
         ps = DBQuery.getPreparedStatement();
         ps.setInt(1, customerId);
         ps.executeUpdate();
+    }
+    
+    public static void addAddress(String address, int cityId, String zip, String phone) throws SQLException {
+        String query = "INSERT INTO address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?, 'NOT NEEDED', ?,?,?,CURRENT_TIMESTAMP,?,CURRENT_TIMESTAMP,?)";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setString(1, address);
+        ps.setInt(2, cityId);
+        ps.setString(3, zip);
+        ps.setString(4, phone);
+        ps.setString(5, UserDAO.currentUser);
+        ps.setString(6, UserDAO.currentUser);
+        ps.executeUpdate();
+        System.out.println("Added an address!");
+    }
+    
+    public static ObservableList<Customer> getAddresses() throws SQLException{
+        ObservableList<Customer> customers=FXCollections.observableArrayList();
+        String query = "SELECT address.addressId, address.address, city.city FROM address INNER JOIN city ON address.cityId = city.cityId";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+                
+         while(result.next()) {
+               Customer customer = new Customer();
+               customer.setAddressId(result.getInt("address.addressId"));
+               customer.setCustomerAddress(result.getString("address.address"));
+               customer.setCustomerCity(result.getString("city.city"));
+               customers.add(customer);
+       }
+        return customers;
     }
     
 }

@@ -5,13 +5,13 @@
  */
 package DAO;
 
-import static DAO.UserDAO.ps;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,16 +19,12 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.TimeZone;
 import javafx.collections.FXCollections;
 import model.Appointment;
 import utils.DBConnection;
-import static model.User.activeUser;
 import utils.DBQuery;
-import model.Customer;
 
 /**
  *
@@ -45,7 +41,6 @@ public class AppointmentDAO {
     static Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     
     public static int foundAppts = 0;
-    //static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd");
     
     public static ObservableList<Appointment> getAppointments() throws SQLException{
         ObservableList<Appointment> appointments=FXCollections.observableArrayList();
@@ -55,20 +50,6 @@ public class AppointmentDAO {
         ps.execute();
         ResultSet result = ps.getResultSet();
         ResultSetMetaData rsmd = result.getMetaData();
-   
-      /* int columnsNumber = rsmd.getColumnCount();
-        System.out.println("Result Set: " + result.toString());
-      */
-      
-      
-      //LocalDateTime ldt = LocalDateTime.now();
-       // ZonedDateTime zdt = ldt.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
-       // ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("UTC"));
-        //LocalDateTime ldtIn = utczdt.toLocalDateTime();
-        
-        //ZonedDateTime zdtOut = ldtIn.atZone(ZoneId.of("UTC"));
-        //ZonedDateTime zdtOutToLocalTZ = zdtOut.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString()));
-        //LocalDateTime ldtOutFinal = zdtOutToLocalTZ.toLocalDateTime();
                 
          while(result.next()) {
                Appointment appointment = new Appointment(); 
@@ -90,18 +71,8 @@ public class AppointmentDAO {
                LocalDateTime endOut = utcEnd.toLocalDateTime();
                appointment.setAppointmentStart(startOut.toLocalTime().toString());
                appointment.setAppointmentEnd(endOut.toLocalTime().toString());
-               //ZonedDateTime zdt = result.getTimestamp("appointment.end").toLocalDateTime().atZone(ZoneId.of(ZoneId.systemDefault().toString()));
-               
+
                appointments.add(appointment);
-             
-             //System.out.println("Appointment: " + appointment);
-             /*for (int i = 1; i <= columnsNumber; i++) {
-           if (i > 1) System.out.print(",  ");
-           String columnValue = result.getString(i);
-           System.out.print(columnValue + " " + rsmd.getColumnName(i));
-       }
-       System.out.println("");
-*/
          }
         return appointments;
     }
@@ -162,27 +133,14 @@ public class AppointmentDAO {
                appointment.setAppointmentDate(dateFormatter.format(result.getTimestamp("appointment.start").toLocalDateTime().toLocalDate()));
                appointment.setAppointmentStart(ZonedDateTime.of(result.getTimestamp("appointment.start").toLocalDateTime(), ZoneId.systemDefault()).toString());
                appointment.setAppointmentEnd(result.getTimestamp("appointment.end").toLocalDateTime().toLocalTime().toString());
-               
-               
                appointment.setAppointmentStart(result.getTimestamp("appointment.start").toLocalDateTime().toLocalTime().toString());
                appointments.add(appointment);
                System.out.println("Consultant ID from getApptToModify: " + result.getInt("appointment.userId"));
-             
-             //System.out.println("Appointment: " + appointment);
-             /*for (int i = 1; i <= columnsNumber; i++) {
-           if (i > 1) System.out.print(",  ");
-           String columnValue = result.getString(i);
-           System.out.print(columnValue + " " + rsmd.getColumnName(i));
-       }
-       System.out.println("");
-*/
+
          }
          System.out.println("Consultant ID from getApptToModify: " + result.getInt("appointment.userId"));
         return appointments;
-    }
-    
-    
-    //public static Boolean alertableAppointments() {
+    } 
     
     public static boolean getAppointmentsAlert(String userName) throws SQLException {
            boolean appointmentAlert = false; 
@@ -289,7 +247,10 @@ public class AppointmentDAO {
             count.last();
             appointmentTypeCount = count.getRow();
             appointment.setAppointmentTypeCount(String.valueOf(appointmentTypeCount));
-            appointment.setTotalApptsCount(String.valueOf(appointmentTypeCount / allApptsCount));
+            Double truncatedResult = BigDecimal.valueOf(appointmentTypeCount / allApptsCount)
+            .setScale(2, RoundingMode.HALF_UP)
+            .doubleValue();
+            appointment.setTotalApptsCount(String.valueOf(truncatedResult));
             System.out.println("Total appts count: " + allApptsCount);
             System.out.println("Appointment type and count: " + result.getString("appointment.type") + " count: " + appointmentTypeCount);
             appointmentTypes.add(appointment);
@@ -297,13 +258,33 @@ public class AppointmentDAO {
         return appointmentTypes;
     }
     
-    public static String validateApptTime(int userId, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
+    public static String validateNewApptTime(int userId, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
         String validTime = "true";
         String query = "SELECT * FROM appointment WHERE appointment.userId = ? AND ? BETWEEN appointment.start AND appointment.end";
         DBQuery.setPreparedStatement(query, DBConnection.getConnection());
         ps = DBQuery.getPreparedStatement();
         ps.setInt(1, userId);
         ps.setTimestamp(2, convertedDateTime(apptDate, startHour, startMinute), cal);
+        ps.execute();
+        ResultSet result = ps.getResultSet();
+        if (result.next()) {
+            validTime = "overlap";
+        }
+        
+        if (Integer.parseInt(startHour) > 17 || (Integer.parseInt(endHour) > 18)) {
+            validTime = "outsideHours";
+        }
+        return validTime;
+    }
+    
+    public static String validateModifiedApptTime(int apptId, int userId, LocalDate apptDate, String startHour, String startMinute, String endHour, String endMinute) throws SQLException {
+        String validTime = "true";
+        String query = "SELECT * FROM appointment WHERE appointment.userId = ? AND ? BETWEEN appointment.start AND appointment.end AND NOT appointment.appointmentId = ?";
+        DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+        ps = DBQuery.getPreparedStatement();
+        ps.setInt(1, userId);
+        ps.setTimestamp(2, convertedDateTime(apptDate, startHour, startMinute), cal);
+        ps.setInt(3, apptId);
         ps.execute();
         ResultSet result = ps.getResultSet();
         if (result.next()) {

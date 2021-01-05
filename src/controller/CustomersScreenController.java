@@ -62,6 +62,10 @@ public class CustomersScreenController implements Initializable {
      * Initializes the controller class.
      */
     @Override
+    
+        /*LAMBDA: The following lambdas populate the values in the customer table. I used the Lambdas
+         to greatly reduce the amount of code needed to populate the table.
+        */
     public void initialize(URL url, ResourceBundle rb) {
        nameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProp());
        addressColumn.setCellValueFactory(cellData -> cellData.getValue().customerAddressProp());

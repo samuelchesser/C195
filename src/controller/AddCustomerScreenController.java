@@ -54,16 +54,21 @@ public class AddCustomerScreenController implements Initializable {
      * Initializes the controller class.
      */
     public String context = "add";
+    @FXML
+    private Button addAddressButton;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            ObservableList<Customer> customers = CustomerDAO.getCustomers();
+            ObservableList<Customer> customers = CustomerDAO.getAddresses();
             customers.forEach((customer) -> {
+                if (!customerAddressComboBox.getItems().contains(customer.getAddressId() + ": " + customer.getCustomerAddress() + " - " + customer.getCustomerCity())) {
             customerAddressComboBox.getItems().addAll(customer.getAddressId() + ": " + customer.getCustomerAddress() + " - " + customer.getCustomerCity());
+                }
         });
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
         
     @FXML
@@ -108,6 +113,10 @@ public class AddCustomerScreenController implements Initializable {
         
     }
 
+    /*
+    This main appointment view serves as the fulfillment of requirement I-2 "the schedule for each consultant"
+    Each consultant can see their and other schedules, and also filter to the next 7 and 30 days
+    */    
     @FXML
     private void displayAppointmentsScreen(ActionEvent event) throws IOException {
         Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
@@ -117,12 +126,21 @@ public class AddCustomerScreenController implements Initializable {
         stage.show();
     }
     
-    @FXML
     public void setModifiedCustFields(Customer customer) {
         System.out.println(customer);
         addCustomerScreenTitle.setText("CAPA: Modify Customer");
         customerAddressComboBox.setValue(customer.getCustomerAddress());
         customerNameTextField.setText(customer.getCustomerName());
+    }
+
+    @FXML
+    private void showNewAddressScreen(ActionEvent event) throws IOException {
+        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AddAddressScreen.fxml"));
+        Scene scene = new Scene(appointment);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+        
     }
     
 }

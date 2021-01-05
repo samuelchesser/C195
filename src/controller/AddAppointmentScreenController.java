@@ -73,10 +73,15 @@ public class AddAppointmentScreenController implements Initializable {
     public String context = "add";
     ObservableList<String> hours = FXCollections.observableArrayList("01","02","03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
     ObservableList<String> minutes = FXCollections.observableArrayList("00","15","30", "45");
+    ObservableList<String> apptTypes = FXCollections.observableArrayList("Kickoff","Checkin","Retro", "Launch", "Training");
     @Override
+    
+    
     public void initialize(URL url, ResourceBundle rb) {
+        /*LAMBDA: The following lambdas populate the Appointment table. By using the lambdas, I was able
+        to reduce the amount of code written and not have to call a separate named function repeatedly.
+        */
         try {
-            //Need to update to pull in cust and consultant id
             ObservableList<Customer> customers = CustomerDAO.getCustomers();
             customers.forEach((customer) -> {
             customerComboBox.getItems().addAll(customer.getCustomerId() + " " + customer.getCustomerName());
@@ -92,21 +97,17 @@ public class AddAppointmentScreenController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            ObservableList<Appointment> appointments = AppointmentDAO.getAppointments();
-            appointments.forEach((appointment) -> {
-            apptTypeComboBox.getItems().addAll(appointment.getAppointmentType());
-        });
-        } catch (SQLException ex) {
-            Logger.getLogger(AddCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+            apptTypeComboBox.setItems(apptTypes);
             startHourComboBox.setItems(hours);
             endHourComboBox.setItems(hours);
             startMinuteComboBox.setItems(minutes);
             endMinuteComboBox.setItems(minutes);
     }
 
+    /*
+    By having the customers available only via a combo box, requirement F-3 "exception control for entering nonexistent or invalid customer data"
+    is fulfilled. Customers must first be created or modified in the appropriate screens to be added to appointments.
+    */
     @FXML
     private void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         if ("add".equals(context)) {
@@ -120,7 +121,7 @@ public class AddAppointmentScreenController implements Initializable {
             String endHour = endHourComboBox.getValue();
             String endMinute = endMinuteComboBox.getValue();
             
-            String validAppt = AppointmentDAO.validateApptTime(userId, apptDate, startHour, startMinute, endHour, endMinute);
+            String validAppt = AppointmentDAO.validateNewApptTime(userId, apptDate, startHour, startMinute, endHour, endMinute);
             if (validAppt == "true") {
             
                 AppointmentDAO.addAppointment(custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
@@ -161,7 +162,7 @@ public class AddAppointmentScreenController implements Initializable {
             String endHour = endHourComboBox.getValue();
             String endMinute = endMinuteComboBox.getValue();
             
-            String validAppt = AppointmentDAO.validateApptTime(userId, apptDate, startHour, startMinute, endHour, endMinute);
+            String validAppt = AppointmentDAO.validateModifiedApptTime(apptId, userId, apptDate, startHour, startMinute, endHour, endMinute);
                 if (validAppt == "true") {
 
                 AppointmentDAO.modifyAppointment(apptId, custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);

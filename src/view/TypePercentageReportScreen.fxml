@@ -21,7 +21,7 @@
             <TableColumn fx:id="percentColumn" prefWidth="109.0" text="Percent of Total" />
         </columns>
       </TableView>
-      <Label layoutX="85.0" layoutY="46.0" text="Appointments by Month" textFill="#e85b49">
+      <Label layoutX="85.0" layoutY="46.0" text="Appointments for Next Month" textFill="#e85b49">
          <font>
             <Font size="18.0" />
          </font>

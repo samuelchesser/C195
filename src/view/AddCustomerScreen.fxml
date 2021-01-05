@@ -43,5 +43,6 @@
       </GridPane>
       <Button fx:id="saveButton" layoutX="372.0" layoutY="243.0" minWidth="60.0" mnemonicParsing="false" onAction="#saveCustomer" text="Save" />
       <Button fx:id="cancelButton" layoutX="442.0" layoutY="243.0" mnemonicParsing="false" onAction="#displayAppointmentsScreen" text="Cancel" />
+      <Button fx:id="addAddressButton" layoutX="14.0" layoutY="248.0" minWidth="60.0" mnemonicParsing="false" onAction="#showNewAddressScreen" text="Add New Address" />
    </children>
 </AnchorPane>

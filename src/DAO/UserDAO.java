@@ -98,17 +98,17 @@ public class UserDAO {
         ResultSet result = ps.getResultSet();
         
         while(result.next()) {
+            totalCount = 0;
             User user = new User();
             user.setUserId(result.getInt("user.userId"));
             user.setUserName(result.getString("user.userName"));
-                
-            String apptCountQuery = "SELECT * FROM appointment WHERE appointment.type = ? AND appointment.start <= ? AND appointment.start >= ? AND appointment.userId = ?";
+            String apptCountQuery = "SELECT * FROM appointment WHERE appointment.type = ? AND appointment.start BETWEEN ? AND ? AND appointment.userId = ?";
             
             DBQuery.setPreparedStatement(apptCountQuery, DBConnection.getConnection());
             ps = DBQuery.getPreparedStatement();
             ps.setString(1, "Kickoff");
-            ps.setTimestamp(2, filterTS);
-            ps.setTimestamp(3, todayTS);
+            ps.setTimestamp(2, todayTS);
+            ps.setTimestamp(3, filterTS);
             ps.setInt(4, result.getInt("user.userId"));
             ps.execute();
             count = ps.getResultSet();
@@ -120,8 +120,8 @@ public class UserDAO {
             DBQuery.setPreparedStatement(apptCountQuery, DBConnection.getConnection());
             ps = DBQuery.getPreparedStatement();
             ps.setString(1, "Checkin");
-            ps.setTimestamp(2, filterTS);
-            ps.setTimestamp(3, todayTS);
+            ps.setTimestamp(2, todayTS);
+            ps.setTimestamp(3, filterTS);
             ps.setInt(4, result.getInt("user.userId"));
             ps.execute();
             count = ps.getResultSet();
@@ -133,8 +133,8 @@ public class UserDAO {
             DBQuery.setPreparedStatement(apptCountQuery, DBConnection.getConnection());
             ps = DBQuery.getPreparedStatement();
             ps.setString(1, "Retro");
-            ps.setTimestamp(2, filterTS);
-            ps.setTimestamp(3, todayTS);
+            ps.setTimestamp(2, todayTS);
+            ps.setTimestamp(3, filterTS);
             ps.setInt(4, result.getInt("user.userId"));
             ps.execute();
             count = ps.getResultSet();
@@ -147,8 +147,8 @@ public class UserDAO {
             DBQuery.setPreparedStatement(apptCountQuery, DBConnection.getConnection());
             ps = DBQuery.getPreparedStatement();
             ps.setString(1, "Launch");
-            ps.setTimestamp(2, filterTS);
-            ps.setTimestamp(3, todayTS);
+            ps.setTimestamp(2, todayTS);
+            ps.setTimestamp(3, filterTS);
             ps.setInt(4, result.getInt("user.userId"));
             ps.execute();
             count = ps.getResultSet();
@@ -161,8 +161,8 @@ public class UserDAO {
             DBQuery.setPreparedStatement(apptCountQuery, DBConnection.getConnection());
             ps = DBQuery.getPreparedStatement();
             ps.setString(1, "Training");
-            ps.setTimestamp(2, filterTS);
-            ps.setTimestamp(3, todayTS);
+            ps.setTimestamp(2, todayTS);
+            ps.setTimestamp(3, filterTS);
             ps.setInt(4, result.getInt("user.userId"));
             ps.execute();
             count = ps.getResultSet();
