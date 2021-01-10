@@ -2,23 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/utils/DBQuery.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/utils/TimeConversion.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/controller/CustomersScreenController.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/controller/AddCustomerScreenController.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/controller/TypePercentageReportScreenController.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/c195/C195.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/model/Customer.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/controller/AppointmentScreenController.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/DAO/UserDAO.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/DAO/AppointmentDAO.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/Languages/loginScreen_en.properties</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/model/User.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/controller/LoginScreenController.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/DAO/CustomerDAO.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/model/Appointment.java</file>
-            <file>file:/Users/schesser/NetBeansProjects/C195/src/controller/AddAppointmentScreenController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -74,41 +74,57 @@ public class AddCustomerScreenController implements Initializable {
     @FXML
     private void saveCustomer(ActionEvent event) throws SQLException, IOException {
         if ("add".equals(context)) {
-        String custName = customerNameTextField.getText();
-        int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
-        System.out.println("Customer Name: " + custName);
-        System.out.println("Address combo box: " + custAddress);
-        CustomerDAO.addCustomer(custName, custAddress);
-        
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Success");
-        alert.setContentText("Customer " + custName + " successfully added");
-        alert.showAndWait();
-        
-        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
-        Scene scene = new Scene(appointment);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+            if ((((customerNameTextField.getText() == null) || customerNameTextField.getText().isEmpty())) || customerAddressComboBox.getSelectionModel().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("");
+                alert.setContentText("A field is not filled in. Note that ALL fields are required. Please fill in all fields and try again.");
+                alert.showAndWait();
+            }
+            else {
+            String custName = customerNameTextField.getText();
+            int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
+            System.out.println("Customer Name: " + custName);
+            System.out.println("Address combo box: " + custAddress);
+            CustomerDAO.addCustomer(custName, custAddress);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Customer " + custName + " successfully added");
+            alert.showAndWait();
+
+            Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+            Scene scene = new Scene(appointment);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            }
         }
         else if ("modify".equals(context)) {
-        String custName = customerNameTextField.getText();
-        int custId = CustomersScreenController.custToModifyId;
-        int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
-        System.out.println("Customer Name: " + custName);
-        System.out.println("Address combo box: " + custAddress);
-        CustomerDAO.modifyCustomer(custName, custAddress, custId);
-        
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Success");
-        alert.setContentText("Customer " + custName + " successfully modified!");
-        alert.showAndWait();
-        
-        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
-        Scene scene = new Scene(appointment);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+            if (((customerNameTextField.getText() == null)) || customerAddressComboBox.getSelectionModel().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("");
+                alert.setContentText("A field is not filled in. Note that ALL fields are required. Please fill in all fields and try again.");
+                alert.showAndWait();
+            }
+            else {
+            String custName = customerNameTextField.getText();
+            int custId = CustomersScreenController.custToModifyId;
+            int custAddress = Integer.parseInt(customerAddressComboBox.getValue().substring(0,1));
+            System.out.println("Customer Name: " + custName);
+            System.out.println("Address combo box: " + custAddress);
+            CustomerDAO.modifyCustomer(custName, custAddress, custId);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Customer " + custName + " successfully modified!");
+            alert.showAndWait();
+
+            Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+            Scene scene = new Scene(appointment);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            }
         }
         
     }

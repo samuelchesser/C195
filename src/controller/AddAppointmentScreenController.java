@@ -111,84 +111,100 @@ public class AddAppointmentScreenController implements Initializable {
     @FXML
     private void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         if ("add".equals(context)) {
-            int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
-            int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
-            String apptType = apptTypeComboBox.getValue();
-            String apptTitle = apptTitleTextField.getText();
-            LocalDate apptDate = dateField.getValue();
-            String startHour = startHourComboBox.getValue();
-            String startMinute = startMinuteComboBox.getValue();
-            String endHour = endHourComboBox.getValue();
-            String endMinute = endMinuteComboBox.getValue();
-            
-            String validAppt = AppointmentDAO.validateNewApptTime(userId, apptDate, startHour, startMinute, endHour, endMinute);
-            if (validAppt == "true") {
-            
-                AppointmentDAO.addAppointment(custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
-
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Success");
-                alert.setContentText("Appt created for " + customerComboBox.getValue() + " on " + apptDate);
-                alert.showAndWait();
-
-                Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
-                Scene scene = new Scene(appointment);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-                }
-            else if (validAppt == "overlap" ){
+            if ((((((((customerComboBox.getSelectionModel().isEmpty() || consultantComboBox.getSelectionModel().isEmpty()) || apptTypeComboBox.getSelectionModel().isEmpty()) || startHourComboBox.getSelectionModel().isEmpty()) || startMinuteComboBox.getSelectionModel().isEmpty()) || endMinuteComboBox.getSelectionModel().isEmpty()) || endHourComboBox.getSelectionModel().isEmpty()) ||  apptTitleTextField.getText() == null) || apptTitleTextField.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Overlapping Appointment for user!");
-                alert.setContentText("That consultant is busy at that time. We require 15 minutes between appointments.");
+                alert.setTitle("Required Field Missing");
+                alert.setContentText("A field is not filled in. Note that ALL fields are required. Please fill in all fields and try again.");
                 alert.showAndWait();
             }
             else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Outside business hours!");
-                alert.setContentText("We don not schedule appointments beginning after 5:45 PM or ending after 6:45 PM local time");
-                alert.showAndWait();
-            }
-        }
-        else if ("modify".equals(context)) {      
-            int apptId = AppointmentScreenController.apptToModifyId;
-            int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
-            int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
-            String apptType = apptTypeComboBox.getValue();
-            String apptTitle = apptTitleTextField.getText();
-            LocalDate apptDate = dateField.getValue();
-            String startHour = startHourComboBox.getValue();
-            String startMinute = startMinuteComboBox.getValue();
-            String endHour = endHourComboBox.getValue();
-            String endMinute = endMinuteComboBox.getValue();
-            
-            String validAppt = AppointmentDAO.validateModifiedApptTime(apptId, userId, apptDate, startHour, startMinute, endHour, endMinute);
+                int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
+                int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
+                String apptType = apptTypeComboBox.getValue();
+                String apptTitle = apptTitleTextField.getText();
+                LocalDate apptDate = dateField.getValue();
+                String startHour = startHourComboBox.getValue();
+                String startMinute = startMinuteComboBox.getValue();
+                String endHour = endHourComboBox.getValue();
+                String endMinute = endMinuteComboBox.getValue();
+           
+                String validAppt = AppointmentDAO.validateNewApptTime(userId, apptDate, startHour, startMinute, endHour, endMinute);
                 if (validAppt == "true") {
 
-                AppointmentDAO.modifyAppointment(apptId, custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
+                    AppointmentDAO.addAppointment(custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Success");
-                alert.setContentText("Appt ID " + apptId + " modified!");
-                alert.showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Success");
+                    alert.setContentText("Appt created for " + customerComboBox.getValue() + " on " + apptDate);
+                    alert.showAndWait();
 
-                Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
-                Scene scene = new Scene(appointment);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
+                    Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+                    Scene scene = new Scene(appointment);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.show();
                 }
                 else if (validAppt == "overlap" ){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Overlapping Appointment for user!");
+                    alert.setContentText("That consultant is busy at that time. We require 15 minutes between appointments.");
+                    alert.showAndWait();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Outside business hours!");
+                    alert.setContentText("We don not schedule appointments beginning after 5:45 PM or ending after 6:45 PM local time");
+                    alert.showAndWait();
+                }
+            }
+        }
+        else if ("modify".equals(context)) {
+            if ((((((((customerComboBox.getSelectionModel().isEmpty() || consultantComboBox.getSelectionModel().isEmpty()) || apptTypeComboBox.getSelectionModel().isEmpty()) || startHourComboBox.getSelectionModel().isEmpty()) || startMinuteComboBox.getSelectionModel().isEmpty()) || endMinuteComboBox.getSelectionModel().isEmpty()) || endHourComboBox.getSelectionModel().isEmpty()) ||  apptTitleTextField.getText() == null) || apptTitleTextField.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Overlapping Appointment for user!");
-                alert.setContentText("That consultant is busy at that time. We require 15 minutes between appointments.");
+                alert.setTitle("Required Field Missing");
+                alert.setContentText("A field is not filled in. Note that ALL fields are required. Please fill in all fields and try again.");
                 alert.showAndWait();
             }
             else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Outside business hours!");
-                alert.setContentText("We don not schedule appointments beginning after 5:45 PM or ending after 6:45 PM local time");
-                alert.showAndWait();
+                int apptId = AppointmentScreenController.apptToModifyId;
+                int custId = Integer.parseInt(customerComboBox.getValue().substring(0,1));
+                int userId = Integer.parseInt(consultantComboBox.getValue().substring(0,1));
+                String apptType = apptTypeComboBox.getValue();
+                String apptTitle = apptTitleTextField.getText();
+                LocalDate apptDate = dateField.getValue();
+                String startHour = startHourComboBox.getValue();
+                String startMinute = startMinuteComboBox.getValue();
+                String endHour = endHourComboBox.getValue();
+                String endMinute = endMinuteComboBox.getValue();
+
+                String validAppt = AppointmentDAO.validateModifiedApptTime(apptId, userId, apptDate, startHour, startMinute, endHour, endMinute);
+                    if (validAppt == "true") {
+
+                        AppointmentDAO.modifyAppointment(apptId, custId, userId, apptType, apptTitle, apptDate, startHour, startMinute, endHour, endMinute);
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Success");
+                        alert.setContentText("Appt ID " + apptId + " modified!");
+                        alert.showAndWait();
+
+                        Parent appointment = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
+                        Scene scene = new Scene(appointment);
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                    else if (validAppt == "overlap" ){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Overlapping Appointment for user!");
+                        alert.setContentText("That consultant is busy at that time. We require 15 minutes between appointments.");
+                        alert.showAndWait();
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Outside business hours!");
+                    alert.setContentText("We don not schedule appointments beginning after 5:45 PM or ending after 6:45 PM local time");
+                    alert.showAndWait();
+                }
             }
         }
     }
