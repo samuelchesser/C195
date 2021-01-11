@@ -6,6 +6,7 @@
 package controller;
 
 import DAO.AppointmentDAO;
+import DAO.CustomerDAO;
 import DAO.UserDAO;
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Customer;
 import model.User;
 
 /**
@@ -68,6 +70,14 @@ public class TypePercentageReportScreenController implements Initializable {
     private Button showAppointmentScreen;
     @FXML
     private Button exitApplication;
+    @FXML
+    private TableColumn<Customer, String> customerColumn;
+    @FXML
+    private TableColumn<Customer, String> countColumn;
+    @FXML
+    private TableColumn<Customer, String> rewardColumn;
+    @FXML
+    private TableView<Customer> customerRewardsTable;
 
     /**
      * Initializes the controller class.
@@ -91,6 +101,10 @@ public class TypePercentageReportScreenController implements Initializable {
     public void populateConsultantAppointmentsReportTable() throws SQLException {
         consultantAppointmentsReportTable.setItems(UserDAO.getConsultantMonthlyApts());
     }
+    
+    public void populateCustomerRewardReportTable() throws SQLException {
+        customerRewardsTable.setItems(CustomerDAO.getCustomerApptCount());
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appointmentTypeColumn.setCellValueFactory(cellData -> cellData.getValue().appointmentTypeProp());
@@ -103,9 +117,14 @@ public class TypePercentageReportScreenController implements Initializable {
         launchColumn.setCellValueFactory(cellData -> cellData.getValue().launchCountProp());
         trainingColumn.setCellValueFactory(cellData -> cellData.getValue().trainingCountProp());
         totalColumn.setCellValueFactory(cellData -> cellData.getValue().totalCountProp());
+        countColumn.setCellValueFactory(cellData -> cellData.getValue().custApptCountProp());
+        customerColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProp());
+        rewardColumn.setCellValueFactory(cellData -> cellData.getValue().customerRewardProp());
+        
         try {
             populateApptTypeByMonthTable();
             populateConsultantAppointmentsReportTable();
+            populateCustomerRewardReportTable();
         } catch (SQLException ex) {
             Logger.getLogger(AppointmentScreenController.class.getName()).log(Level.WARNING, null, ex);
         }

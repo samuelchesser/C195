@@ -21,7 +21,10 @@ import utils.DBQuery;
  *
  * @author schesser
  */
+
+
 public class CustomerDAO {
+    public static int apptCount = 0;
     static PreparedStatement ps;
     
     public static ObservableList<Customer> getCustomers() throws SQLException{
@@ -60,7 +63,6 @@ public class CustomerDAO {
                customer.setCustomerCity(result.getString("city.city"));
                customer.setCityId(result.getInt("city.cityid"));
                customers.add(customer);
-          
        }
         return customers;
     }
@@ -126,6 +128,33 @@ public class CustomerDAO {
                customer.setCustomerCity(result.getString("city.city"));
                customers.add(customer);
        }
+        return customers;
+    }
+    
+    public static ObservableList<Customer> getCustomerApptCount() throws SQLException{
+        ObservableList<Customer> customers = getCustomers();
+        
+        for (Customer customer : customers) {
+            String query = "SELECT COUNT(*) AS total FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId WHERE customer.customerId = ?";
+            DBQuery.setPreparedStatement(query, DBConnection.getConnection());
+            ps = DBQuery.getPreparedStatement();
+            ps.setInt(1, customer.getCustomerId());
+            ps.execute();
+            ResultSet result = ps.getResultSet();
+            while(result.next()) {
+                System.out.println("Total for " + customer.getCustomerName() + " " + result.getInt("total"));
+            customer.setCustomerName(customer.getCustomerName());
+            customer.setCustApptCount(String.valueOf(result.getInt("total")));
+            customer.setCustomerReward("No reward available");
+            if (result.getInt("total") > 5 && result.getInt("total") < 10) {
+                customer.setCustomerReward("Lunch on us next meeting");
+            }
+            else if (result.getInt("total") > 10) {
+                customer.setCustomerReward("Free 30 minute appointment");
+            }
+                
+            }
+        }
         return customers;
     }
     

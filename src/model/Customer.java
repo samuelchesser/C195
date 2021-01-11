@@ -23,6 +23,8 @@ public class Customer {
     private final IntegerProperty cityId;
     private final StringProperty customerZip;
     private final StringProperty customerPhone;
+    private final StringProperty custApptCount;
+    private final StringProperty customerReward;
 
 
     
@@ -35,6 +37,8 @@ public class Customer {
         customerZip = new SimpleStringProperty();
         customerPhone = new SimpleStringProperty();
         cityId = new SimpleIntegerProperty();
+        custApptCount = new SimpleStringProperty();
+        customerReward = new SimpleStringProperty();
 
     }
     
@@ -101,6 +105,22 @@ public class Customer {
     public IntegerProperty cityIdProp() { return cityId; }
 
     public void setCityId(int cityId) { this.cityId.set(cityId);}
+    
+    public String getCustApptCount() {
+        return this.custApptCount.get();
+    }
+
+    public StringProperty custApptCountProp() { return custApptCount; }
+
+    public void setCustApptCount(String custApptCount) { this.custApptCount.set(custApptCount);}
+    
+    public String getCustomerReward() {
+        return this.customerReward.get();
+    }
+
+    public StringProperty customerRewardProp() { return customerReward; }
+
+    public void setCustomerReward(String customerReward) { this.customerReward.set(customerReward);}
 
     @Override
     public String toString() {

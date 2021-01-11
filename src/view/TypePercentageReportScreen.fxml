@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="513.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TypePercentageReportScreenController">
+<AnchorPane id="AnchorPane" prefHeight="760.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TypePercentageReportScreenController">
    <children>
       <Label fx:id="reportsScreenTitle" layoutY="3.0" text="CAPA: Reports Screen" textFill="#2964e4">
          <font>
@@ -42,7 +42,19 @@
             <TableColumn fx:id="totalColumn" prefWidth="65.0" text="Total" />
          </columns>
       </TableView>
-      <Button fx:id="showAppointmentScreen" layoutX="464.0" layoutY="472.0" minWidth="55.0" mnemonicParsing="false" onAction="#displayAppointmentScreen" text="Back" />
-      <Button fx:id="exitApplication" layoutX="535.0" layoutY="472.0" minWidth="55.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
+      <Button fx:id="showAppointmentScreen" layoutX="464.0" layoutY="693.0" minWidth="55.0" mnemonicParsing="false" onAction="#displayAppointmentScreen" text="Back" />
+      <Button fx:id="exitApplication" layoutX="535.0" layoutY="693.0" minWidth="55.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
+      <Label layoutX="75.0" layoutY="477.0" text="Customer Rewards Report" textFill="#e85b49">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="customerRewardsTable" layoutX="75.0" layoutY="521.0" prefHeight="149.0" prefWidth="450.0">
+         <columns>
+            <TableColumn fx:id="customerColumn" prefWidth="117.0" text="Customer" />
+            <TableColumn fx:id="countColumn" minWidth="0.0" prefWidth="79.0" text="Count" />
+            <TableColumn fx:id="rewardColumn" prefWidth="253.0" text="Reward" />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>
